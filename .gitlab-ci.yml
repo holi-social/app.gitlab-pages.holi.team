@@ -4,6 +4,19 @@ variables:
   JEKYLL_ENV: production
   LC_ALL: C.UTF-8
 
+default:
+  before_script:
+    - set -eux
+    - env
+#  artifacts:
+#    paths:
+#      - what's a good build log artifact for jekyll?
+#    name: "${CI_JOB_NAME}_${CI_JOB_ID}"
+#    when: on_failure
+  interruptible: true
+  tags:
+    - holi-small # build on smaller machine
+
 before_script:
   - bundle install
 
