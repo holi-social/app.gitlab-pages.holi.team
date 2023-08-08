@@ -1,4 +1,4 @@
-image: ruby:2.3
+image: jekyll/jekyll:3.8
 
 variables:
   JEKYLL_ENV: production
@@ -20,8 +20,7 @@ default:
 test:
   stage: test
   script:
-  - bundle install
-  - bundle exec jekyll build -d test
+  - jekyll build -d test
   artifacts:
     paths:
     - test
@@ -31,8 +30,7 @@ test:
 pages:
   stage: deploy
   script:
-  - bundle install
-  - bundle exec jekyll build -d public
+  - jekyll build -d public
   artifacts:
     paths:
     - public

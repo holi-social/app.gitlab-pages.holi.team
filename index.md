@@ -124,5 +124,5 @@ Almost all our services/infrastructure run in the Google Cloud.
 
 #### Pub/Sub
 
-As an asynchronous IPC mechanism, some backend services talk to each other via the Google Pub/Sub message queue.
+As an asynchronous data exchange & replication mechanism, some backend services communicate with one another via the Google Pub/Sub message queue.
 
