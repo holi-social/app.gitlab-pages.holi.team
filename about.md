@@ -4,12 +4,8 @@ title: About
 permalink: /about/
 ---
 
-This is the base Jekyll theme. You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at [jekyllrb.com](http://jekyllrb.com/)
+The [holi](https://holi.social) [app](https://app.holi.social) is the network for engaged people and organisations to take action together. holi combines existing social apps and digital tools into one home. The goal? holi becomes a community-focused ecosystem. People can get inspired, grow, network, get resources and collaborate to create positive impact together.
 
-You can find the source code for the Jekyll new theme at:
-{% include icon-github.html username="jglovier" %} /
-[jekyll-new](https://github.com/jglovier/jekyll-new)
-
-You can find the source code for Jekyll at
-{% include icon-github.html username="jekyll" %} /
-[jekyll](https://github.com/jekyll/jekyll)
+* You are looking to act for the common good? holi makes it easy and convenient. It is where your ideas can become actions!
+* You are tired of anti-social social networks? holi is your alternative to social platforms as you know them. We are stronger together! holi connects you with matching initiatives and provides a safe home for digital exchange and inspiration.
+* You want to help develop the ecosystem? holi is Open Source Software, you can participate in its development.
