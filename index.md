@@ -32,6 +32,7 @@ and running code, no matter which area you want to focus on.
 holi-frontends contains all code for the [Web App](https://app.holi.social) as well as for the 
 [iOS](https://apps.apple.com/pt/app/holi-social-eco-impact/id6446693757) and 
 [Android](https://apps.apple.com/pt/app/holi-social-eco-impact/id6446693757) Mobile Apps.
+We are using a single ReactNative codebase to serve all three platforms.
 
 The [README](https://gitlab.holi.team/app/holi-frontends) contains further documentation regarding the frontends.
 
@@ -52,9 +53,9 @@ holi-okuna is the backend that takes care of the social components of holi. In h
 preferences, posts, insights and a lot more. This project was forked by us. Originally, it had been developed as a
 social network.
 
-The [README](https://gitlab.holi.team/app/holi-okuna) contains further documentation regarding the Unified API.
+The [README](https://gitlab.holi.team/app/holi-okuna) contains further documentation regarding Holi-Okuna.
 
-### the app repositories
+### The app repositories
 
 [holi-app-donations](https://gitlab.holi.team/app/holi-app-donations)
 [holi-app-goodnews](https://gitlab.holi.team/app/holi-app-goodnews)
@@ -72,18 +73,18 @@ repository contains the deployment configuration for this service.
 
 ### Geo-API
 
-[[Repository](https://gitlab.holi.team/app/holi-geo-api)
+[holi-geo-api](https://gitlab.holi.team/app/holi-geo-api)
 
 Some searches on holi can be filtered by geolocation (e.g. initiatives, users, ...). This repository contains a backend
 service for accessing geolocation data.
 
-### Cloud
+### OwnCloud
 
 [holi-ocis](https://gitlab.holi.team/app/holi-ocis)
 [holi-ocis-integration](https://gitlab.holi.team/app/holi-ocis-integration)
 
-For initiatives, holi provides cloud storage and collaborative document editing. The technical component these are
-provided with is Owncloud OCIS. These two repositories contain the deployment configuration for this service.
+For initiatives, holi provides cloud storage and collaborative document editing. To provide these services,
+we are using Owncloud OCIS. These two repositories contain the deployment configuration for this service.
 
 ### Videoconferences
 
