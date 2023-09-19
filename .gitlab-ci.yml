@@ -1,4 +1,4 @@
-image: node:v18-alpine
+image: node:18-alpine
 
 stages:
   - test
