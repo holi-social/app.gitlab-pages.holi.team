@@ -1,38 +1,28 @@
-image: jekyll/jekyll:3.8
+image: node:v18-alpine
 
-variables:
-  JEKYLL_ENV: production
-  LC_ALL: C.UTF-8
-
-default:
-  before_script:
-    - set -eux
-    - env
-#  artifacts:
-#    paths:
-#      - what's a good build log artifact for jekyll?
-#    name: "${CI_JOB_NAME}_${CI_JOB_ID}"
-#    when: on_failure
-  interruptible: true
-  tags:
-    - holi-small # build on smaller machine
+stages:
+  - test
+  - deploy
 
 test:
   stage: test
   script:
-  - jekyll build -d test
-  artifacts:
-    paths:
-    - test
+  - cd website
+  - yarn install
+  - yarn build
   except:
-  - main
+    - master
 
 pages:
   stage: deploy
   script:
-  - jekyll build -d public
+  - cd website
+  - yarn install
+  - yarn build
+  - mv ./build ../public
   artifacts:
     paths:
     - public
   only:
-  - main
+    - master
+

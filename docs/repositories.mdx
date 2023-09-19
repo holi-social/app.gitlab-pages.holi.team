@@ -1,18 +1,13 @@
 ---
-layout: default
+sidebar_position: 1
 ---
 
-# Introduction
-
-This document will help you dive into holi quickly. It will lay out the structure of the project (runtime and
-repositories) and hopefully give you guidance on where to head for working on what you want to accomplish.
-
-## Repositories
+# Repositories
 
 holi is comprised of many parts (deployment units). This section will explain, in rough order of importance, all of
 them.
 
-### Meta
+## Meta
 
 TL;DR: Check out this repository to get going quickly.
 
@@ -25,7 +20,7 @@ minimal to full.
 The [README](https://gitlab.holi.team/app/holi-meta) contains everything you need to start actually fetching, building
 and running code, no matter which area you want to focus on.
 
-### Frontends
+## Frontends
 
 [holi-frontends](https://gitlab.holi.team/app/holi-frontends)
 
@@ -36,7 +31,7 @@ We are using a single ReactNative codebase to serve all three platforms.
 
 The [README](https://gitlab.holi.team/app/holi-frontends) contains further documentation regarding the frontends.
 
-### Unified API
+## Unified API
 
 [holi-unified-api](https://gitlab.holi.team/app/holi-unified-api)
 
@@ -45,7 +40,7 @@ and taking care of authentication and authorization.
 
 The [README](https://gitlab.holi.team/app/holi-unified-api) contains further documentation regarding the Unified API.
 
-### Social
+## Social
 
 [holi-okuna](https://gitlab.holi.team/app/holi-okuna)
 
@@ -55,7 +50,7 @@ social network.
 
 The [README](https://gitlab.holi.team/app/holi-okuna) contains further documentation regarding Holi-Okuna.
 
-### The app repositories
+## The app repositories
 
 [holi-app-donations](https://gitlab.holi.team/app/holi-app-donations)
 [holi-app-goodnews](https://gitlab.holi.team/app/holi-app-goodnews)
@@ -64,21 +59,21 @@ The [README](https://gitlab.holi.team/app/holi-okuna) contains further documenta
 holi can integrate so called Apps. These can be developed by third parties. We have implemented three of them up to
 now. The repositories above contain their respective backend.
 
-### Chat
+## Chat
 
 [holi-chat-server](https://gitlab.holi.team/app/holi-chat-server)
 
 holi contains a chat based on [synapse](https://github.com/matrix-org/synapse) by the Matrix.org Foundation. This
 repository contains the deployment configuration for this service.
 
-### Geo-API
+## Geo-API
 
 [holi-geo-api](https://gitlab.holi.team/app/holi-geo-api)
 
 Some searches on holi can be filtered by geolocation (e.g. initiatives, users, ...). This repository contains a backend
 service for accessing geolocation data.
 
-### OwnCloud
+## OwnCloud
 
 [holi-ocis](https://gitlab.holi.team/app/holi-ocis)
 [holi-ocis-integration](https://gitlab.holi.team/app/holi-ocis-integration)
@@ -86,44 +81,9 @@ service for accessing geolocation data.
 For initiatives, holi provides cloud storage and collaborative document editing. To provide these services,
 we are using Owncloud OCIS. These two repositories contain the deployment configuration for this service.
 
-### Videoconferences
+## Videoconferences
 
 [holi-meet](https://gitlab.holi.team/app/holi-meet)
 
 For initiatives, holi also provides Video Chat. It is based on Jitsi Meet. This repository contains the deployment
 configuration for this service.
-
-## Runtime Architecture
-
-This section describes the runtime architecture of holi. Let's start with a (simplified) diagram, and then dive into some details:
-
-![Runtime Architecture Diagram](/assets/images/runtime-architecture.png)
-
-### Frontends
-
-The Web Frontend and the Mobile Apps work a little bit different from each other.
-
-The Mobile Apps directly connect to the Unified API for fetching data. For authenticating users, they directly interact
-with our Identity Provider, [Ory](https://ory.sh).
-
-The Web App proxies requests to the Unified API and to Ory through a server component, which also handles Server Side
-Rendering (Web SSR in the diagram).
-
-### Identity Provider
-
-We are using an external service, [Ory](https://ory.sh), as Identity Provider.
-
-### Services
-
-Most services are completely hidden from the clients and only accessible via the Unified API. There is some services like
-Cloud, Chat, Video Calls that are accessible from Clients because they need to be for proper function. This is not
-accurately portrayed in the diagram.
-
-### Google Cloud
-
-Almost all our services/infrastructure run in the Google Cloud.
-
-#### Pub/Sub
-
-As an asynchronous data exchange & replication mechanism, some backend services communicate with one another via the Google Pub/Sub message queue.
-

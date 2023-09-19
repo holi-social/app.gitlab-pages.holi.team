@@ -1,14 +1,41 @@
-# holi Development Documentation Entrypoint
+# Website
 
-This is our website/documentation for people interested in co-creating holi in the area of software development. It's a Jekyll website. View it live at https://app.gitlab-pages.holi.team
+This website is built using [Docusaurus 2](https://docusaurus.io/), a modern static website generator.
 
----
+### Installation
 
-## Using Jekyll locally
+```
+$ yarn
+```
 
-To work locally with this project, you'll have to follow the steps below:
+### Local Development
 
-1. Fork, clone or download this project
-1. Run `docker run --rm --volume="$PWD:/srv/jekyll:Z" --publish 4000:4000 jekyll/jekyll:3.8 jekyll serve -l`
-1. Add content
-1. Check your changes in the browser at https://localhost:4000/
+```
+$ yarn start
+```
+
+This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
+
+### Build
+
+```
+$ yarn build
+```
+
+This command generates static content into the `build` directory and can be served using any static contents hosting service.
+
+### Deployment
+
+Using SSH:
+
+```
+$ USE_SSH=true yarn deploy
+```
+
+Not using SSH:
+
+```
+$ GIT_USER=<Your GitHub username> yarn deploy
+```
+
+If you are using GitHub pages for hosting, this command is a convenient way to build the website and push to the `gh-pages` branch.
