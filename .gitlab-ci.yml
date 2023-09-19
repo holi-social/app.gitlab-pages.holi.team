@@ -10,7 +10,7 @@ test:
   - yarn install
   - yarn build
   except:
-    - master
+    - main
 
 pages:
   stage: deploy
@@ -21,5 +21,5 @@ pages:
     paths:
     - build
   only:
-    - master
+    - main
 
