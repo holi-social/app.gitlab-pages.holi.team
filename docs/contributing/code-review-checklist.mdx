@@ -1,0 +1,82 @@
+---
+---
+
+# Code Review Checklist
+
+## Preface
+
+This document was created during the "Cool down days", in an attempt to consolidate our approach to code reviews.
+This checklist attempts to help you to conform to our values for code review.
+The idea is not to give a list of things that are required to be checked for in a code review but to serve as a
+source of “inspiration” what things could ideally be considered in a code review.
+
+### Goals
+* Get feedback as early as possible
+* Uncover blind spots (things that were forgotten)
+* Enable collective code ownership
+* The code is our hard source of truth, which can always be changed by anyone.
+* Share knowledge to empower everyone to do the things you can
+* Improve quality and reduce bugs
+* Keep complexity small
+* Ensure we build things the right way
+
+### Non Goals
+* Make reviews crazy long and lots of effort (stay pragmatic)
+* Tick checkboxes (this checklist is a collection of things that could be checked for)
+* Ensure we build the right things
+
+## Checklist
+
+### Functionality
+* Are all acceptance criteria met?
+* Did you actually try out what was build? Does it work as intended?
+* Are edge cases and potential error scenarios handled appropriately?
+
+### Readability and Maintainability
+* Is the code well-organized and easy to read?
+* Are naming conventions consistent and descriptive?
+  * Is domain terminology applied sensibly and consistently (e.g. are we iterating over items or over users?)
+* Are comments used appropriately to explain complex or non-obvious code segments?
+* Bug/limitations workarounds: are there comments explaining the workaround, with links to the original issue?
+* Are we creating tech debt with this change? Is this OK and well justified?
+
+### Test Coverage
+* Does the code include appropriate unit tests or integration tests?
+* Is the test coverage sufficient for the critical functionality and edge cases?
+* Is the test code well-structured, readable, and maintainable?
+* Does the MR follow our testing strategy?
+* Are the tests flaky? What happens if they are run repeatedly / out of order?
+* Are the tests order dependent?
+
+### Code Reuse and Dependencies
+* UI components reuse
+  * Does the code use existing UI components where appropriate?
+* Introduction of new UI components
+  * Is the introduction of a new UI component well justified?
+  * Does a new implementation / the component API correspond to the design system?
+* New package dependencies
+  * Is the introduction of a new library dependency well justified? Could we achieve the same outcome without a
+    new dependency easily?
+  * Does the new dependency introduce new native code? If so this requires a new binary release.
+
+### Performance
+* React UI
+  * Does the code follow best practices to avoid unnecessary redraws?
+  * Does the UI thread and JS thread fps drop during interaction?
+* Are there any potential performance bottlenecks or inefficiencies?
+* Are there any opportunities for caching or parallelization?
+
+### Documentation
+* Is the change requiring any updates to high level documentation that should be updated? Are corresponding MRs
+  linked in this MR?
+  
+### Operations
+* Are API changes downwards compatible?
+  * If not: are old versions using the incompatible API change still around?
+* Should we introduce new metrics or alarms? Are they included / linked in the MR?
+* Does older data need to be migrated? Rollbacks?
+
+### Frontend Caching (Apollo Cache)
+* Does pagination / endless scrolling work correctly? Is the correct pagination policy being used?
+* On mutations: is cache / UI correctly updated?
+* For queries with parameters: Are keyArgs used correctly?
