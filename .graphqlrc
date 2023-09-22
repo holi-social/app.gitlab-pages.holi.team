@@ -1,0 +1,16 @@
+schema: "https://production.unified.apis.holi.social/graphql"
+extensions:
+  graphql-markdown:
+    linkRoot: "/docs"
+    baseURL: "graphql"
+    homepage: "docs/graphql/index.mdx"
+    loaders:
+      UrlLoader:
+        module: "@graphql-tools/url-loader"
+        options:
+          method: "POST"
+    printTypeOptions:
+      deprecated: "group"
+    docOptions:
+      pagination: false,
+      toc: false

@@ -32,6 +32,10 @@ const config = {
     locales: ['en'],
   },
 
+  plugins: [
+    "@graphql-markdown/docusaurus"
+  ],
+
   presets: [
     [
       'classic',
