@@ -8,6 +8,7 @@ test:
   stage: test
   script:
   - yarn install
+  - yarn graphql-to-doc
   - yarn build
   except:
     - main
@@ -16,6 +17,7 @@ pages:
   stage: deploy
   script:
   - yarn install
+  - yarn graphql-to-doc
   - yarn build
   - mv build/ public/
   artifacts:
