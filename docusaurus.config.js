@@ -33,7 +33,8 @@ const config = {
   },
 
   plugins: [
-    "@graphql-markdown/docusaurus"
+    ['@graphql-markdown/docusaurus', {}],
+    ['drawio', {}],
   ],
 
   presets: [
