@@ -9,7 +9,7 @@ components that make up the HOLI runtime.
 <Drawio content={ArchitectureOverviewDrawio} style={{ width: "100%" }} />
 
 :::info
-To update this diagram, import the source file in [draw.io](https://draw.io), edit and export again.
+To edit this diagram, import the source file in [draw.io](https://draw.io), edit and export again.
 :::
 
 ## Frontends
@@ -29,21 +29,22 @@ To update this diagram, import the source file in [draw.io](https://draw.io), ed
 
 HOLI uses [Ory Cloud](https://www.ory.sh/cloud/) as an identity provider. Oathkeeper is an API gateway (aka
 reverse proxy) that can enforce authentication and optionally authorization for backend services.
-See [Authentication](./authentication) for more details.
+See [Authentication](./authentication) for more details. The deployment and configuration code is contained
+in the [holi-unified-api](https://gitlab.holi.team/app/holi-unified-api) repository (also see below).
 
-## GraphQL Mesh (unified api)
+## Unified API (GraphQL Mesh)
 
-The [unified-api](https://gitlab.holi.team/app/holi-unified-api) is (another) API gateway that provides
+[holi-unified-api](https://gitlab.holi.team/app/holi-unified-api) is (another) API gateway that provides
 HOLIs GraphQL API towards frontend and internal clients. The GraphQL API itself is a federated API that
 stitches together multiple (GraphQL / REST / ...) APIs to offer a single well-defined and -typed
 entrypoint.
 
 ## Social Core (okuna)
 
-holi-okuna is a fork of the social network called “Okuna” (earlier: “Openbook”) which started as a Facebook
-clone/competitor. Okunas development has recently been discontinued but its sources still provide the HOLI
-project with a good starting point to develop its “social features” upon. Examples: user profiles,
-connections, posts.
+[holi-okuna](https://gitlab.holi.team/app/holi-okuna) is a fork of the social network called "Okuna"
+(earlier: "Openbook") which started as a Facebook clone/competitor. Okunas development has recently
+been discontinued but its sources still provide the HOLI project with a good starting point to develop
+its "social features" upon. Examples: user profiles, connections, posts.
 
 ## Chat
 
@@ -71,9 +72,23 @@ HOLI is planning to integrate a larger number of third party services in the fut
 that each of those integrations will have zero, one or more backend services within HOLIs runtime
 architecture itself. Current integrations are:
 
-- [holi-app-donations](https://gitlab.holi.team/app/holi-app-donations)
-- [holi-app-goodnews](https://gitlab.holi.team/app/holi-app-goodnews)
-- [holi-app-volunteering](https://gitlab.holi.team/app/holi-app-volunteering)
+### Donations
+
+[holi-app-donations](https://gitlab.holi.team/app/holi-app-donations) contains the backend for the
+integration of [Betterplace.org](https://betterplace.org). The frontend is part of the
+[holi-frontends](https://gitlab.holi.team/app/holi-frontends) monorepo.
+
+### GoodNews
+
+[holi-app-goodnews](https://gitlab.holi.team/app/holi-app-goodnews) contains the backend for the
+integration of [GoodNews](https://goodnews.eu/). The frontend is part of the
+[holi-frontends](https://gitlab.holi.team/app/holi-frontends) monorepo.
+
+### Volunteering
+
+[holi-app-volunteering](https://gitlab.holi.team/app/holi-app-volunteering) contains the backend for the
+integration of [Voltastics](https://voltastics.com). The frontend is part of the
+[holi-frontends](https://gitlab.holi.team/app/holi-frontends) monorepo.
 
 ## Shared Services
 
