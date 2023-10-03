@@ -1,5 +1,34 @@
 # Integration Events
 
-:::caution
-TODO: write me
-:::
+As described in [Architecture Overview](./architecture-overview#pubsub) holi uses [Google Cloud Pub/Sub](https://cloud.google.com/pubsub/docs/overview) to integrate
+with third-party applications.
+
+## Event Types
+
+Currently, the following events are emitted by [holi-okuna](https://gitlab.holi.team/app/holi-okuna):
+
+| Event Name         | Description                                                           |
+| ------------------ | --------------------------------------------------------------------- |
+| `UserNameUpdated`  | Emitted when a user updates their username.                           |
+| `UserDeleted`      | Emitted when a user deletes their account.                            |
+| `SpaceCreated`     | Emitted when a user creates a space.                                  |
+| `SpaceUserAdded`   | Emitted when a user joins a space.                                    |
+| `SpaceUserLeft`    | Emitted when a user leaves a space.                                   |
+| `SpaceUserRemoved` | Emitted when a user is removed from a space by a space administrator. |
+| `SpaceDeleted`     | Emitted when a space is deleted.                                      |
+
+Currently, the only consumer of these events is [holi-ocis-integration](https://gitlab.holi.team/app/holi-ocis-integration) which ensures that
+users, their names and attributes and their rights and roles are in sync between holi (Okuna / Ory) and OwnCloud.
+
+## Event Payloads
+
+At this point of time, there's no dedicated documentation for the payloads of the events. Please refer to
+
+- the publishers source code in [holi-okuna](https://gitlab.holi.team/app/holi-okuna/-/blob/main/openbook/helpers.py), and
+- the consumers source code in [holi-ocis-integration](https://gitlab.holi.team/app/holi-ocis-integration/-/blob/main/src/types.ts)
+
+to learn more about the payloads.
+
+## Publish/Subscribe Topics
+
+Currently, there is only topic per environment `okuna_$ENVIRONMENT` (in which `$ENVIRONMENT` is either `staging` or `production`).
