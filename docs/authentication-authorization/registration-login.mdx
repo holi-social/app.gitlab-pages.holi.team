@@ -1,0 +1,56 @@
+import Drawio from "@theme/Drawio";
+import RegistrationFlow from "!!raw-loader!../img/registration-flow.drawio";
+import LoginFlow from "!!raw-loader!../img/login-flow.drawio";
+
+# Registration & Login
+
+Registration and login operations involve 5 different systems (we ignore here the presence of unified-api and oathkeeper to
+simplify the technical explanation of the current flows focusing more on the interaction between our app and the systems
+that store and manage the data of the users):
+
+- Frontend (web app + mobile app);
+- Backend (Okuna) that manages user profiles;
+- Identity provider (Ory) that manages the user identities;
+- Chat server (Matrix Synapse) that manages user chat accounts;
+- Owncloud
+
+Here below is described the registration and login flow that involves the three main actors of the system (Frontend,
+Backend and Ory), in the next section: Integration with 3rd party software it’s explained how the integration with the other
+two systems (Matrix and Owncloud) works.
+
+## Registration flow
+
+<Drawio content={RegistrationFlow} style={{ width: "100%" }} />
+
+:::info
+To edit this diagram, import the source file in [draw.io](https://draw.io), edit and export as xml again.
+:::
+
+The registration involved 3 systems and multiple iterations between them.
+
+- The user, via web app or mobile app, performs registration with email and password. The user is then registered on Ory
+  which returns the active session to the frontend and the verification flow to execute.
+- The frontend then will start the verification flow requesting Ory to send the verification email containing the
+  verification code. The user will insert the verification code inside the form and a request for verification will
+  be sent to Ory that will return a Response containing a success or error payload.
+- At the same time, the frontend will save and retrieves the user's data through a GET to our Okuna backend.
+- At that point, the user will create his user profile by entering personal data such as name, pronouns, location, etc.
+  Okuna will update the user profile and update the user information (first and last name) in Ory calling the admin API
+  `/admin/identities/` provided by Ory.
+
+## Login flow
+
+<Drawio content={LoginFlow} style={{ width: "100%" }} />
+
+:::info
+To edit this diagram, import the source file in [draw.io](https://draw.io), edit and export as xml again.
+:::
+
+The authentication flow is simple and involved all the three systems.
+
+- The user, via web app or mobile app, performs the login to Ory with email and password. The user is then authenticated
+  on Ory which returns the active session that contains all the identities to the frontend.
+- The frontend at this point wIll retrieve the user's data from Okuna using the identity id returned from Ory.
+
+The authentication works a bit differently for mobile and web, especially on how the Ory session token is stored and used.
+For more information about this check the [Authentication and Authorization](../authentication-authorization) page.

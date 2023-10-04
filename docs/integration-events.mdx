@@ -1,0 +1,55 @@
+# Integration Events
+
+As described in [Architecture Overview](./architecture-overview#pubsub) holi uses [Google Cloud Pub/Sub](https://cloud.google.com/pubsub/docs/overview)
+to communicate asynchronously and reliably between applications.
+
+## Event Types
+
+Currently, the following events are emitted by [holi-okuna](https://gitlab.holi.team/app/holi-okuna):
+
+| Event Name         | Description                                                           |
+| ------------------ | --------------------------------------------------------------------- |
+| `UserNameUpdated`  | Emitted when a user updates their username.                           |
+| `UserDeleted`      | Emitted when a user deletes their account.                            |
+| `SpaceCreated`     | Emitted when a user creates a space.                                  |
+| `SpaceUserAdded`   | Emitted when a user joins a space.                                    |
+| `SpaceUserLeft`    | Emitted when a user leaves a space.                                   |
+| `SpaceUserRemoved` | Emitted when a user is removed from a space by a space administrator. |
+| `SpaceDeleted`     | Emitted when a space is deleted.                                      |
+
+Currently, the only consumer of these events is [holi-ocis-integration](https://gitlab.holi.team/app/holi-ocis-integration) which ensures that
+users, their names and attributes and their rights and roles are in sync between holi (Okuna / Ory) and OwnCloud.
+
+## Event Payloads
+
+Messages on Google Cloud Pub/Sub follow this (exemplary) structure:
+
+```json
+{
+  "message": {
+    "data": "<BASE64_ENCODED_PAYLOAD>",
+    "attributes": {
+      "eventType": "SpaceCreated",
+      "eventVersion": "1.0.0"
+    }
+  },
+  "subscription": "projects/MY-PROJECT/subscriptions/MY-SUB"
+}
+```
+
+For every event emitted by a holi emitter two key/value pairs are to be added to the attributes object:
+
+- `eventType`: name of the event
+- `eventVersion`: version of the event (uses semantic versioning)
+
+At this point of time, there's no dedicated documentation for the `data` field of the event (which varies depending on `eventType`).
+Please refer to
+
+- the publishers source code in [holi-okuna](https://gitlab.holi.team/app/holi-okuna/-/blob/main/openbook/helpers.py), and
+- the consumers source code in [holi-ocis-integration](https://gitlab.holi.team/app/holi-ocis-integration/-/blob/main/src/types.ts)
+
+to learn more about the payloads.
+
+## Publish/Subscribe Topics
+
+Currently, topics are separated per environment only: `okuna_$ENVIRONMENT` (in which `$ENVIRONMENT` is either `staging` or `production`).
