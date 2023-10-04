@@ -1,7 +1,7 @@
 # Integration Events
 
-As described in [Architecture Overview](./architecture-overview#pubsub) holi uses [Google Cloud Pub/Sub](https://cloud.google.com/pubsub/docs/overview) to integrate
-with third-party applications.
+As described in [Architecture Overview](./architecture-overview#pubsub) holi uses [Google Cloud Pub/Sub](https://cloud.google.com/pubsub/docs/overview)
+to communicate asynchronously and reliably between applications.
 
 ## Event Types
 
@@ -52,4 +52,4 @@ to learn more about the payloads.
 
 ## Publish/Subscribe Topics
 
-Currently, there is only topic per environment `okuna_$ENVIRONMENT` (in which `$ENVIRONMENT` is either `staging` or `production`).
+Currently, topics are separated per environment only: `okuna_$ENVIRONMENT` (in which `$ENVIRONMENT` is either `staging` or `production`).
