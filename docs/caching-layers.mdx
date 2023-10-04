@@ -1,0 +1,61 @@
+import Drawio from "@theme/Drawio";
+import ArchitectureOverviewDrawio from "!!raw-loader!./img/architecture-overview.drawio";
+
+# Caching Layers
+
+:::info
+This diagram is identical to the one in the [Architecture Overview](./architecture-overview) page and is repeated here for convenience.
+:::
+
+<Drawio content={ArchitectureOverviewDrawio} style={{ width: "100%" }} />
+
+## Frontends (Mobile, Web (SPA), Web (SSR))
+
+- We differentiate between state management (aka client-side caching) for remote data and local data. Local state management of the
+  application is complex and somewhat hard to clearly distinguish from caching, therefore this listing here shall just give first
+  pointers and does not give any guarantees for completeness or being up-to-date.
+
+- All remote data
+  - fetched via GraphQL (unified-api) is fetched using [Apollo Client caching](https://www.apollographql.com/docs/react/caching/overview/)
+  - fetched for chat will be stored in [Jotai](https://jotai.org).
+  - login state / user session data is stored in
+    [Apollo Reactive Variables](https://www.apollographql.com/docs/react/local-state/reactive-variables/)
+
+## Identity and Access Proxy (Ory Oathkeeper)
+
+- We are currently not aware of any caching being done in the context of Oathkeeper.
+- Ory as SaaS features "[Edge Sessions](https://www.ory.sh/docs/concepts/cache#caching-strategy)" (caching on CDN edges) to speed up
+  calls to /sessions/whoami but this comes with potentially stale responses. So we’d only activate if we have a reason.
+  This feature is currently NOT active.
+
+## GraphQL Mesh (unified api)
+
+- "Caching" of aggregated schemata at build time. When the service is built it fetches the schemata of the aggregated services and keeps
+  the unified schema as part of the docker image. Therefore, an service rebuild is then necessary to reflect changes in one or multiple
+  backends.
+
+- We have implemented response caching using Redis for the DiscoverSpaces query. The configuration is inside the `.meshrc.yml` configuration
+  file. It gets/sets the records using the name of the operation (DiscoverSpaces) and the variables passed to the query (offset, limit,
+  geolocation (country), hash of the topic ids, has of the skill ids). The response cache is invalidated in Okuna when a mutation
+  (create, update or deletion) of a space occurs. Note that the plugin for GraphQL mesh is not really powerful. For a more complex use case
+  would be useful to implement the envelop library
+  ([Adding a GraphQL Response Cache – GraphQL Envelop (the-guild.dev)](https://the-guild.dev/graphql/envelop/docs/guides/adding-a-graphql-response-cache)).
+
+## Social Core (okuna)
+
+- Okuna (based on Django) uses Redis to cache “potentially everything”.
+  We currently use caching for specific database query result sets in holi Spaces (using @cached_as annotation of the cacheops library and manual cache operations based on Django caching).
+
+## App Integrations
+
+- [holi-app-donations](https://gitlab.holi.team/app/holi-app-donations): uses in-memory caching for query responses
+- [holi-app-goodnews](https://gitlab.holi.team/app/holi-app-goodnews): uses in-memory caching for query responses
+- [holi-app-volunteering](https://gitlab.holi.team/app/holi-volunteering): uses in-memory caching for query responses
+
+## Shared Services
+
+Some services are of such a generic nature that they can be sensibly shared between core and integration services or even frontend
+applications.
+
+- [holi-geo-api](https://gitlab.holi.team/app/holi-geo-api): uses in-memory caching for query responses
+- shared-image-proxy: uses Google CDN to cache responses.
