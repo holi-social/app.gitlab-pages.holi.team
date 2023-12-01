@@ -4,7 +4,7 @@ import LoginFlow from "!!raw-loader!../img/login-flow.drawio";
 
 # Registration & Login
 
-Registration and login operations involve 5 different systems (we ignore here the presence of unified-api and oathkeeper to
+Registration and login operations involve 6 different systems (we ignore here the presence of unified-api and oathkeeper to
 simplify the technical explanation of the current flows focusing more on the interaction between our app and the systems
 that store and manage the data of the users):
 
@@ -13,6 +13,7 @@ that store and manage the data of the users):
 - Identity provider (Ory) that manages the user identities;
 - Chat server (Matrix Synapse) that manages user chat accounts;
 - Owncloud
+- Novu notification cloud
 
 Here below is described the registration and login flow that involves the three main actors of the system (Frontend,
 Backend and Ory), in the next section: Integration with 3rd party software it’s explained how the integration with the other
@@ -37,6 +38,7 @@ The registration involved 3 systems and multiple iterations between them.
 - At that point, the user will create his user profile by entering personal data such as name, pronouns, location, etc.
   Okuna will update the user profile and update the user information (first and last name) in Ory calling the admin API
   `/admin/identities/` provided by Ory.
+- The users email, names and language preferences are stored as a subscriber in novu
 
 ## Login flow
 

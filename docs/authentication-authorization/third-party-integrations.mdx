@@ -1,6 +1,7 @@
 import Drawio from "@theme/Drawio";
 import MatrixChatIdentity from "!!raw-loader!../img/matrix-chat-identity.drawio";
 import MatrixLogin from "!!raw-loader!../img/matrix-login.drawio";
+import NovuSecureFetching from "!!raw-loader!../img/novu-secure-fetching.drawio";
 
 # Third-Party Integrations
 
@@ -43,6 +44,14 @@ the identities (Okuna, Ory and Matrix).
 It is important that change to or deletion of a user does not lead to consistency problems between the three systems. A
 user who is deleted from Okuna must be deleted from both Ory and Matrix otherwise there is a risk that a user who creates
 a new user with a previously existing identity will be able to access the deleted user's chats and data.
+
+### Securing the Notification content
+
+In-App notification content from Novu Cloud is secured. Users authenticate by providing a subscriber hash,
+which is obtained from our unified-api before fetching and rendering the notifications in the frontend clients.
+
+<Drawio content={NovuSecureFetching} style={{ width: "100%" }} />
+
 
 ## OwnCloud
 

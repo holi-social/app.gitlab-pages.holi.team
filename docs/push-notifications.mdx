@@ -42,6 +42,20 @@ Assume users A and B chatting with each other:
     - [Background, Closed app] The notification is shown as is (with default data from the configured pusher).
   - [Frontend] Once A clicks on the notification the app starts (if it’s not already running) and redirects to the respective room of the notification. This is done by picking up the notification when the app is started via expo-notifications, or listening to interactions via a expo-notifications handler, while the app is running.
 
+
+## Transactional Push Notifications
+
+The holi app receives transactional push notifications via the [Novu notification cloud](https://novu.co) through platform-specific providers (Firebase Cloud Messaging, Apple Push Notification service).
+
+Okuna has been extended with the Novu sdk and models for each Notification type (cf. _openbook_notifications/notifications.py_).
+These models are used in the application logic, send Novu events and trigger pre-configured Novu workflows.
+
+Novu is configured via its [console](https://eu.web.novu.co) by the holi staff.
+If you want to contribute a new notification, please contact us.
+
+At start of the mobile client, the _DeviceRegistration_ component obtains and sends a users device token to Okuna, to be subscribed to Novu.
+To display push notifications to the user the transactional push notifications also use the expo-notification handlers as described above (cf. _apps/mobile/notifications/initNotifications.ts_).
+
 ### Technical Learnings and Constraints
 
 During the implementation of the push notification spike we had a lot of important learnings and identified some pitfalls. These are the most important ones:
