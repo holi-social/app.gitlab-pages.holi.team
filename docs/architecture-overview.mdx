@@ -133,4 +133,4 @@ We use a EU-hosted variant of [Novu](https://novu.co) to deliver in-app notifica
 
 To forward the required data, our social core (Okuna) subscribes user emails and push tokens to novu as a side effect of handling users and their social interactions.
 The mobile clients [receive push messages](./push-notifications) via platform-specific providers.
-All clients also connect to novu cloud directly, to [securely](./authentication-authorization/registration-login) fetch and acknowledge In-App notifications and allow users to manage their notification preferences.
+All clients connect to novu cloud [securely](./authentication-authorization/third-party-integrations#securing-the-notification-content) to fetch and acknowledge In-App notifications and allow users to manage their notification preferences.

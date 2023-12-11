@@ -33,7 +33,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="Wd8jt3hyLF1a-4HjpUbD-69" value="hmac encrypt user id &lt;br&gt;with novu api key" style="edgeLabel;resizable=0;html=1;align=center;verticalAlign=middle;" connectable="0" vertex="1" parent="Wd8jt3hyLF1a-4HjpUbD-68">
+        <mxCell id="Wd8jt3hyLF1a-4HjpUbD-69" value="hash user id &lt;br&gt;with novu api key (hmac)" style="edgeLabel;resizable=0;html=1;align=center;verticalAlign=middle;" connectable="0" vertex="1" parent="Wd8jt3hyLF1a-4HjpUbD-68">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="18" as="offset" />
           </mxGeometry>
