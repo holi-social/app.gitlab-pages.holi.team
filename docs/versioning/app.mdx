@@ -1,0 +1,65 @@
+# Mobile App Versioning
+
+First, please read this [introduction about how to think about mobile app versioning](https://www.runway.team/blog/how-why-mobile-app-versioning).
+As an end user-facing application, a version number has different meaning than with e.g.
+libraries. The only technical requirement is that it needs to establish an ordering criteria so
+that app stores are able to determine which version is younger than others / the newest.
+Therefore, app versioning should be mostly about supporting our own workflows.
+
+We use **semantic versioning format** (`major.minor.patch`) for the frontend applications.
+
+### Semantics of major.minor.patch
+
+We follow a free interpretation of the format (major.minor.patch) that does not convey any
+semantics about backwards compatibility. Internally, we attach a build number for internal
+reference (`major.minor.patch.buildNumber`). Rationale:
+
+* We use the **major version 1 for all releases** (for now)
+  * major will be incremented on frontend rewrites or changes that completely change how the
+    frontends look/feel like for the users. intention would be to communicate big changes
+    within the version number.
+  * Every **app store release increments minor**. Minor is incremented on every release, not in
+    between releases.
+  * On **every hotfix (via EAS Update) updates increases patch**.
+
+#### Pros & Cons
+
+* ✅ Easy in internal communication (“we currently support backwards compatibility for 1.55.0 - 1.58.0”)
+* ✅ Human readable / understandable which version is newer
+* ✅ Allows upfront planning for PMs in Jira as the next release version “name” is always known upfront (in contrast to CalVer see below)
+  * ⛔️ might lead to feature-based release cycle thinking
+  * ✅ allows to switch to feature-based release cycle easily
+* ✅ gives pointer to version control (indirectly via build system), ideally tag also in git to get rid of indirection
+* ✅ allows resets of the build number (e.g. if/when migrating from gitlab → gitlab → github) while preserving the ordering required by app stores
+* ✅ allows tracking of multiple builds per version (during stabilisation of a version for rollout) as featured by App Store Connect
+* ✅ completely automatable as every build can be versioned + tagged without human intervention / planning
+
+### How to Map to Android & iOS Version Numbers
+
+* Android (internally) uses monotonically increasing integers (`versionCode`) which can be increased with
+  every build we do, users see string in semver format (`versionName`).
+* iOS uses semver format `major.minor.patch` (`CFBundleShortVersionString`) and allows additional
+  `CFBundleVersion` to contain another arbitrary number (`major.minor.patch.sthmore`).
+  `CFBundleShortVersionString` typically contains the version and `CFBundleVersion` the build number,
+  prefixed with the version to link the two (not technically required but sensible to do).
+* So, for a release `1.55.0`
+  * Android will have a (potentially series of) builds e.g.
+    * `versionCode=5647` and `versionName=1.55.0.1234`
+    * `versionCode=5651` and `versionName=1.55.0.1238`
+    * in which `versionCode`  needs to be larger than any previous `versionCode` for builds uploaded to
+      Play Store (published or not) and is therefore derived from what has been previously uploaded to
+      Play Store
+    * in which `versionName` is an “arbitrary” string displayed to the user, consisting of the release
+      version `1.55.0` and our internal build number (currently taken from GitLab, 1234 and 1238 in this
+      example).
+  * iOS will (most likely) have the same series of build e.g.
+    * `CFBundleShortVersionString=1.55.0` and `CFBundleVersion=1.55.0.1234`
+    * `CFBundleShortVersionString=1.55.0` and `CFBundleVersion=1.55.0.1238`
+    * in which `CFBundleVersion` additionally links to our internal build number (currently taken from
+      GitLab, `1234` and `1238` in this example)
+    * in which `CFBundleShortVersionString` represents what the users see
+
+### How to Map Versions to Expo
+* `version` maps to `CFBundleVersion` (iOS) and `versionName` (Android).
+* `ios.buildNumber` maps to `CFBundleShortVersionString` (iOS).
+* `android.versionCode` maps to `versionCode` (Android).

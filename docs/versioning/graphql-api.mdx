@@ -1,0 +1,14 @@
+# GraphQL API Versioning
+
+The backend API follows the [evolutionary approach](https://graphql.org/learn/best-practices/#versioning)
+preferred by the GraphQL specification.
+
+* This means the API is not versioned.
+* The API is built in a constrained backwards-compatible way. It contains a GraphQL query that returns
+  if a client application should or must update itself, allowing us to control how many old versions
+  are supported.
+  * See [GraphQL API Evolution](./graphql-api-evolution) for details and strategies
+    to avoid breaking changes.
+* In the future we might have additional clients (e.g. from the community) that need API versioning in
+  order to check for compatibility. Until we have that requirement we don’t concern ourselves with
+  versioning our API.
