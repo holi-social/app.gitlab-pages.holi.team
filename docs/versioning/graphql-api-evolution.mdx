@@ -1,0 +1,37 @@
+# GraphQL API Evolution
+
+Since we are dealing with mobile clients, we always need to ensure, that older app versions are
+still supported by our backend. Details on app version management and current policies regarding
+supported versions can be found in [Versioning (App & API)](./index).
+
+Following [GraphQL best practices](https://graphql.org/learn/best-practices/#versioning) we evolve
+our schema on a field basis as opposed to versioning our API as a whole.
+
+## Avoid Breaking Changes
+
+Since supporting multiple implementations is extra work and needs special care, before going ahead
+with your implementation and migration strategy, please consult other devs and explore other
+possibilities for your concrete use cases.
+
+When designing / changing the signature of an operation (query / mutation / subscription), consider
+e.g. the following aspects on how to avoid breaking changes:
+
+* The introduction of new **required** (as in non-optional) fields in operations as well as
+  complete changes in return type should be a last resort and need to be coordinated with
+  product.
+* Instead of backwards-incompatibly changing the behavior of an existing operation, a new operation
+  should be used as an alternative.
+* When adding arguments to an operation, if possible add defaults that allow old clients to work.
+
+## How to Evolve our API in Case of Breaking Changes
+1. Provide the functionality on a distinct operation.
+   * If there is a sane and fitting but different name, use it!
+   * If not, add a version suffix to the operation and/or related types in question
+2. Deprecate the operation and/or related types in question in our GraphQL schema using the
+   `@deprecated` Directive inside the `reason` argument.
+   * Specify the current APP Version, the deprecation happened at
+   * Provide a pointer to other devs on what implementation to migrate to (method name, usage etc)
+3. Announce the deprecation in #Dev-Team
+4. If applicable, create a follow-up ticket to later on remove the newly introduced operation/types
+   and migrate them back to the original identifier at a later point in time (once no old app
+   versions are using the original identifier anymore).
