@@ -1,0 +1,36 @@
+# I18n (Internationalization)
+
+This document provides an overview about how we handle translations. 
+See [holi-frontends/README](https://gitlab.holi.team/app/holi-frontends/#i18n-internationalization) for example usage.
+
+## Language support and detection
+
+- Currently we support two languages: English and German
+- English is our default and fallback language
+- Language selection is platform dependent:
+  - Mobile: Device language using [expo-localization](https://docs.expo.dev/versions/latest/sdk/localization/)
+  - Web: Browser language, with nearly identical behaviour for server and client
+    - Server: Request header `accept-language` using https://github.com/florrain/locale
+    - Client: Browser language using [i18next-browser-languagedetector](https://github.com/i18next/i18next-browser-languageDetector) with option `navigator`
+- Currently the language is not part of the user profile and may vary by platform and device
+  :::caution
+  This might result e.g. in e-mails or push notifications not matching the language of the device they are received on
+  :::
+
+## Technical documentation
+
+- We use [i18next](https://www.i18next.com/) as base framework as it provides a lot of options for configuration and plugins to comply to our current and possible future needs
+  - Currently all translations are part of the frontend code, i.e. we do not use an external tool for editing translation yet
+    - In order to allow for flexibility in tool selection, we use a commonly used format for our translations: [JSON Format v3](https://www.i18next.com/misc/json-format#i18next-json-v3) in a flat structure (i.e. no nested keys)
+    - The format allows for pluralization and variable interpolation
+  - Currently all translations are part of the web and app bundles
+- [react-i18next](https://react.i18next.com/) for React/React Native integration
+  - Provides access to translations in components with the [useTranslation hook](https://react.i18next.com/latest/usetranslation-hook)
+  - Provides a [Trans](https://react.i18next.com/latest/trans-component) component for nesting components inside translations (e.g. links inside a sentence)
+- [ni18n](https://github.com/JCQuintas/ni18n) for [NextJS](https://nextjs.org/) integration and SSR
+  :::info
+  We did not choose to use [next-i18next](https://github.com/i18next/next-i18next), as the localization in NextJS is tightly coupled to [internationalized routing](https://nextjs.org/docs/advanced-features/i18n-routing), which is not something we currently want.
+  :::
+- We use [namespaces](https://www.i18next.com/principles/namespaces) to separate translations from the core application and different holi-apps
+- We use [Intl](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl) to provide locale data, e.g. for number or date formatting
+  - On mobile this is polyfilled using [intl](https://www.npmjs.com/package/intl)
