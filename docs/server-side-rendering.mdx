@@ -1,0 +1,135 @@
+# Server-side rendering (SSR)
+
+Here we describe our approach to server-side rendering and list some guidelines for implementation and common pitfalls.
+
+##  Motivation
+
+As our frontend code is not only used for web but our mobile app as well, server-side rendering does not provide any advantage to our app. I.e. we have to ensure that all screens still support pure client-side rendering.
+While SSR can bring performance improvements on web, as it reduces the perceived loading time for users, this was not our priority but rather a welcome side effect.
+The main reason to implement SSR was the requirement to directly answer requests with HTML that is enriched with meta tags for the following use cases:
+- SEO: meta tags for search results (title, description etc), possible also structured data following [schema.org](https://schema.org/) (author, date etc.)
+- Social media previews: [OpenGraph](https://www.opengraph.xyz/) meta tags
+
+## Basic principles
+
+### Server-side rendering with React
+
+The HTML generated on the server side will not be interactive until JavaScript is loaded and executed on the client-side as well. This process is called "hydration" in React (see [`hydrateRoot`](https://react.dev/reference/react-dom/client/hydrateRoot)): React will calculate the DOM on the client side as well (similiar to client-side rendering) and attach all event listeners and other logic to the already existing DOM elements.
+:::caution
+For this to work properly, it is necessary that the HTML generated on server and client-side match as closely as possible. Otherwise React will throw errors and switch to client-side rendering.
+:::
+
+As all required data can already be fetched on the server-side, it is possible to skip loading states on the client-side, reducing the aforementionend perceived loading time.
+
+### Server-side rendering with Next.js
+
+In order to achieve equality between the HTML generated on both server and client side, Next.js allows us to add props to the server response that can be used on the client side as well. This is done by implementing [`getServerSideProps`](https://nextjs.org/docs/pages/building-your-application/data-fetching/get-server-side-props) for each page that should support SSR.
+
+We currently add two types of information to these props:
+- i18n locale and translations
+
+  We detect the user's locale from the requests `accept-language` header (mimicking the current client-side solution using the browser's language). The detected `locale` as well as all translations for this locale are added to the props provided to the client, so that it can be used there for initializing the `i18n` context. (For more information on our i18n solution, see [Internationalization](./internationalisation.mdx))
+- Apollo cache
+  
+  We execute all queries that have to be executed in order to fully render the page with all content on the server side. Once this is done, we extract the state of the Apollo cache and add it to the page props as well. On the client side this state is used to initialize the Apollo client.
+  This is basically "prewarming" the cache, because whenever a query is executed now, the client can access the results that were prefetched on the server side (as long as the [`fetchPolicy`](https://www.apollographql.com/docs/react/data/queries/#setting-a-fetch-policy) is reading from the cache).
+
+  When we detect that the requested content could not be found, we can return a "Not found" response displaying the 404 page and returning the appropriate status code.
+
+:::note
+Currently we only add the server side props on the first request, but not on subsequent navigation, as this would load duplicated or unnecessary data and slow down the user experience.
+:::
+
+:::info
+Next.js also allows to implement [getStaticProps](https://nextjs.org/docs/pages/building-your-application/data-fetching/get-static-props), which does not get called per request, but only once during build time. However, as we extract the user's locale from request headers, we can not use this function for any page containing translations.
+:::
+
+:::info
+Our implementation follows the [official example using Apollo](https://github.com/vercel/next.js/tree/canary/examples/with-apollo) by Next.js instead of the [recommended approach](https://www.apollographql.com/docs/react/performance/server-side-rendering/#executing-queries-with-getdatafromtree) by Apollo. Apollo suggests to use `getDataFromTree` to collect all queries for the page to render. However during implementation it became apparent this does not readily support sequential queries (e.g. when pages are protected by feature toggles).
+:::
+
+:::info
+Currently we are using Next.js with the [Pages Router](https://nextjs.org/docs/pages).
+With version 13 Next.js introduced a new router approach called
+[App Router](https://nextjs.org/docs/app) with concepts like [Server Components](https://nextjs.org/docs/app/building-your-application/rendering/server-components) or [Streaming](https://nextjs.org/docs/app/building-your-application/routing/loading-ui-and-streaming#streaming-with-suspense).
+However, it would require further investigation to find out if this modal is compatible with React Native.
+:::
+
+## Implementation
+
+### Creating server side props
+
+In order to enable SSR for a page, all we have to do is implement the function `getServerSideProps`. To facilitate this we provide the helper function `createServerSideProps` that only requires a definition of the queries that have to be executed to fully render the page content.
+
+On pages with query parameters the usage of `useQuery(<param>)` can be reproduced by accessing `context.query.<param>` where `context` is the request context provided by Next.js.
+
+:::caution
+The client-side Apollo client is only able to use the cache results if the variables (or rather the resulting cache key) exactly match the ones used on the server side.
+:::
+
+### Cache usage on the client side
+
+To prevent errors during hydration and shorten the perceived loading time for users, the client should use the cache state that was "prewarmed" during SSR. When using a query like `const { loading, data } = useQuery(...)`
+the `data` might already be present during the initial render, and we should not always display a loading state if `loading` is true.
+
+:::caution
+As we mainly use SSR for SEO and other meta tags, we assume the user to be logged out for all queries. If you expect a query to return differing data for a logged-in user (e.g. a space member), make sure to refresh the data on the client side, e.g. by setting
+```
+fetchPolicy: isSSR ? 'cache-first' : 'cache-and-network'
+```
+:::
+
+
+### Handling differences between server and client
+
+As there is no browser context during server side rendering and some content or logic might only be necessary on the client-side only, we might have to differentiate between server and client side in some components to prevent [hydration errors](https://nextjs.org/docs/messages/react-hydration-error).
+
+#### Client-only logic
+
+All logic that should only be executed on the client side should be wrapped inside a `useEffect` as such effects do not get executed during SSR.
+
+#### Web APIs
+
+There is no `window`, `document` or similiar objects available during SSR or any other web API you might want to use. Make sure to check `isSSR` where necessary to prevent errors or move the logic into a `useEffect`.
+
+#### Window dimensions or pixel density
+
+Instead of `useWindowDimensions` you should use `useClientWindowDimensions` which ensures the usage of default values during SSR and a rerender with the correct values on the client side.
+
+However, the rerender might cause a styling flash for the user. In order to prevent this, we can solve some of these issues by using media queries (also working for React Native with `react-native-media-query`) or the `HoliContainer` component.
+
+Also make sure to use the `SafeAreaProvider` defined in our component library.
+
+#### Layout effects
+
+Usages of `useLayoutEffect` will result in [warnings](https://reactjs.org/link/uselayouteffect-ssr) during SSR and should be replaced by `useEffect` instead, or `useIsomorphicLayoutEffect` if you want to keep the behaviour on mobile.
+
+#### Access restrictions
+
+Pages or components that should only be visible to logged-in users or require specific permissions should be wrapped inside a `PermissionsGuard`. This will prevent rendering the component during SSR and check for the permissions on the client side.
+
+#### Suppressing warnings
+
+In very limited use-cases it is possible to suppress a hydration warning by setting the prop `suppressHydrationWarning`:
+- Only works for HTML tags (e.g. `div`, `span` etc.)
+- Only prevents warnings one level deep
+- Only works for differences in text content
+
+#### Disabling SSR
+
+Sometimes it's necessary to fully disable SSR for a screen or component and enforce client-side rendering to prevent errors. This can be achieved by using dynamic imports:
+```
+import dynamic from 'next/dynamic'
+
+const Component = dynamic(() => import('<path-to-component>'), { ssr: false })
+```
+
+### Testing
+
+Ensuring that the result of SSR is correct and hydration works properly, there is no way around a certain amount of manual testing:
+
+- Test all pages in a browser, refresh the page and check the logs (browser and web server)!
+- Test the server generated HTML by disabling JavaScript
+- Test on mobile and make sure everything still works with pure client-side rendering
+
+Testing the contents of server generated HTML can also be automated in web e2e tests by creating a browser context with disabled JavaScript.
