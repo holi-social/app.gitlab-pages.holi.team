@@ -92,7 +92,7 @@ All logic that should only be executed on the client side should be wrapped insi
 
 There is no `window`, `document` or similiar objects available during SSR or any other web API you might want to use. Make sure to check `isSSR` where necessary to prevent errors or move the logic into a `useEffect`.
 
-#### Window dimensions or pixel density
+#### Window dimensions, pixel density, mobile safe areas etc.
 
 Instead of `useWindowDimensions` you should use `useClientWindowDimensions` which ensures the usage of default values during SSR and a rerender with the correct values on the client side.
 
@@ -117,11 +117,11 @@ In very limited use-cases it is possible to suppress a hydration warning by sett
 
 #### Disabling SSR
 
-Sometimes it's necessary to fully disable SSR for a screen or component and enforce client-side rendering to prevent errors. This can be achieved by using dynamic imports:
+Sometimes it's necessary to fully disable SSR for a page and enforce client-side rendering to prevent errors. This can be achieved by using dynamic imports:
 ```
 import dynamic from 'next/dynamic'
 
-const Component = dynamic(() => import('<path-to-component>'), { ssr: false })
+const Page = dynamic(() => import('<path-to-page>'), { ssr: false })
 ```
 
 ### Testing
