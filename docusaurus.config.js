@@ -34,7 +34,7 @@ const config = {
 
   plugins: [
     ['@graphql-markdown/docusaurus', {}],
-    ['drawio', {}],
+    ['drawio', {lib: '/js/drawio-viewer.min.js'}],
   ],
 
   presets: [
