@@ -11,7 +11,10 @@ import TrackingOverviewDrawio from "!!raw-loader!./img/tracking-overview.drawio"
 To edit this diagram, import the source file in [draw.io](https://draw.io), edit and export as xml again.
 :::
 
-We use [Posthog](https://posthog.com/) as a SaaS-provider to store and analyze tracking data. To generate tracking events from the frontend we use the [posthog-js](https://posthog.com/docs/libraries/js) and [posthog-react-native](https://posthog.com/docs/libraries/react-native) libraries for web and mobile respectively. For web the events are proxied by our Next.js backend to posthog. For mobile the events are directly sent to posthogs servers.
+We use [Posthog](https://posthog.com/) as a SaaS-provider to store and analyze tracking data for product analytics purposes. To generate tracking events from the frontends:
+
+* For web we use [posthog-js](https://posthog.com/docs/libraries/js). All events are proxied by our Next.js backend to posthog.
+* For mobile we use [posthog-react-native](https://posthog.com/docs/libraries/react-native). All the events are directly sent to posthogs servers.
 
 No events are sent from the backend during server side rendering or from other backend services.
 
@@ -19,7 +22,10 @@ No events are sent from the backend during server side rendering or from other b
 
 ### Configuration
 
-Tracking is configured using the env variables `POSTHOG_KEY` and `POSTHOG_HOST`. For mobile these are configured in _/apps/mobile/eas.json_ for the build. For web they are provided as env variables to the deployed container via terraform in _/terraform/environments/web/vars.tf_. Since the values are needed in the react frontend and Next.js's mechanism of `NEXT_PUBLIC_…` env vars is resolved at build time in the CI, the values are provided via raw javascript and set as e.g. `window.POSTHOG_KEY` (see `promoteEnvVarToWindow`). For local development they are set in _/.env.local_.
+Tracking is configured using the env variables `POSTHOG_KEY` and `POSTHOG_HOST`.
+
+* For mobile these are configured in `/apps/mobile/eas.json` for the build.
+* For web they are provided as env variables to the deployed container via terraform in `/terraform/environments/web/vars.tf`. Since the values are needed in the react frontend and Next.js's mechanism of `NEXT_PUBLIC_…` env vars is resolved at build time in the CI, the values are provided via raw javascript and set as e.g. `window.POSTHOG_KEY` (see `promoteEnvVarToWindow`). For local development they are set in `/.env.local`.
 
 If either `POSTHOG_KEY` and `POSTHOG_HOST` is left blank tracking will be disabled for the environment.
 
@@ -37,7 +43,7 @@ const { track } = useTracking()
 track(TrackingEvent.Registration.RegisterButtonPressed)
 ```
 
-or by using the `HoliButtonTracked` or `HoliLinkTracked` components.
+or by using the `HoliButtonTracked` or `HoliLinkTracked` components. Further tracking-enabled components will most likely be added over time. New tracking events can be added by extending `TrackingEvent`.
 
 ## Sensitive data
 
