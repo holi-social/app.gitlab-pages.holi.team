@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" modified="2024-05-14T14:51:29.856Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36" etag="d7RMclp6Z1zHFNs_-ECx" version="24.4.0">
+  <diagram name="Page-1" id="7ZLzxDFJdoXlpHrX6P7m">
+    <mxGraphModel dx="1358" dy="857" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="583" pageHeight="413" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="i7DAYmyohwmX8yKg8v5F-2" value="User Client" style="rounded=0;whiteSpace=wrap;html=1;dashed=1;align=left;labelPosition=center;verticalLabelPosition=top;verticalAlign=bottom;" vertex="1" parent="1">
+          <mxGeometry x="7" y="80" width="320" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="i7DAYmyohwmX8yKg8v5F-3" value="Holi Network&lt;br&gt;&lt;div&gt;Google Cloud&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;labelPosition=center;verticalLabelPosition=top;align=left;verticalAlign=bottom;dashed=1;glass=0;shadow=0;perimeterSpacing=0;strokeWidth=1;fillColor=none;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;opacity=50;fontColor=#808080;" vertex="1" parent="1">
+          <mxGeometry x="7" y="230" width="173" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="i7DAYmyohwmX8yKg8v5F-60" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="i7DAYmyohwmX8yKg8v5F-10" target="i7DAYmyohwmX8yKg8v5F-33">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="i7DAYmyohwmX8yKg8v5F-10" value="Mobile App&lt;br&gt;&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;(posthog-react-native&lt;/span&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;)&lt;/span&gt;&lt;br&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="177" y="95" width="130" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="i7DAYmyohwmX8yKg8v5F-33" value="Posthog" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="397" y="80" width="180" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="i7DAYmyohwmX8yKg8v5F-59" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="i7DAYmyohwmX8yKg8v5F-35" target="i7DAYmyohwmX8yKg8v5F-39">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="i7DAYmyohwmX8yKg8v5F-35" value="&lt;span style=&quot;background-color: initial;&quot;&gt;Web&lt;/span&gt;&lt;div&gt;(posthog-js)&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="27" y="95" width="130" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="i7DAYmyohwmX8yKg8v5F-61" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="i7DAYmyohwmX8yKg8v5F-39" target="i7DAYmyohwmX8yKg8v5F-33">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="i7DAYmyohwmX8yKg8v5F-39" value="&lt;div&gt;Web&lt;/div&gt;&lt;div&gt;(Next.js proxy)&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="37" y="260" width="110" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

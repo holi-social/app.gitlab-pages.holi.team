@@ -1,0 +1,91 @@
+import Drawio from "@theme/Drawio";
+import TrackingOverviewDrawio from "!!raw-loader!./img/tracking-overview.drawio";
+import TrackingConsentDrawio from "!!raw-loader!./img/tracking-consent.drawio";
+
+# Tracking
+
+## Architectural overview
+
+<Drawio content={TrackingOverviewDrawio} style={{ width: "100%" }} />
+
+:::info
+To edit this diagram, import the source file in [draw.io](https://draw.io), edit and export as xml again.
+:::
+
+We use [Posthog](https://posthog.com/) as a SaaS-provider to store and analyze tracking data for product analytics purposes. To generate tracking events from the frontends:
+
+* For web we use [posthog-js](https://posthog.com/docs/libraries/js). All events are proxied by our Next.js backend to posthog.
+* For mobile we use [posthog-react-native](https://posthog.com/docs/libraries/react-native). All the events are directly sent to posthogs servers.
+
+No events are sent from the backend during server side rendering or from other backend services.
+
+## Frontend Integration
+
+### Configuration
+
+Tracking is configured using the env variables `POSTHOG_KEY` and `POSTHOG_HOST`.
+
+* For mobile these are configured in `/apps/mobile/eas.json` for the build.
+* For web they are provided as env variables to the deployed container via terraform in `/terraform/environments/web/vars.tf`. Since the values are needed in the react frontend and Next.js's mechanism of `NEXT_PUBLIC_…` env vars is resolved at build time in the CI, the values are provided via raw javascript and set as e.g. `window.POSTHOG_KEY` (see `promoteEnvVarToWindow`). For local development they are set in `/.env.local`.
+
+If either `POSTHOG_KEY` and `POSTHOG_HOST` is left blank tracking will be disabled for the environment.
+
+### Tracking Consent
+
+holi will never track a user without their explicit consent. This is both in line with our values but also a GDPR requirement. Therefore, at some point of time users see a tracking consent modal within the app. Consent can be given for every single purpose individually:
+
+* product analytics
+* personalization
+* marketing (planned, currently not implemented)
+
+Depending on if the user is logged in or not, tracking consent is stored *per purpose*:
+
+* when logged out
+  * in `AsyncStorage` (mobile) (key `HOLI_TRACKING_CONSENT`)
+  * in `LocalStorage` (web) (key `HOLI_TRACKING_CONSENT`)
+* when logged in
+  * in the user profile (backend side)
+
+The following diagram depicts the app initialization process:
+
+<Drawio content={TrackingConsentDrawio} style={{ width: "100%" }} />
+
+:::info
+To edit this diagram, import the source file in [draw.io](https://draw.io), edit and export as xml again.
+:::
+
+Please note that the PostHog client is initialized with opt-out by default so we don't accidentally track users before they explicitly gave consent.
+
+When a user logs out of holi, the `AsyncStorage`/`LocalStorage` consent state is being reset to "unknown". This is done because we assume that, if a user logs out from a device, the device is shared by multiple people and we don't want to track those other people without asking them for consent. As a consequence, users will see a tracking consent dialog again on that device shortly after.
+
+### Events
+
+Posthog automatically captures pageview/-leave and generic click/touch events.
+
+Custom events can be captured like this
+```ts
+import useTracking from '@holi/core/tracking/hooks/useTracking'
+import { TrackingEvent } from '@holi/core/tracking'
+…
+const { track } = useTracking()
+…
+track(TrackingEvent.Registration.RegisterButtonPressed)
+```
+
+or by using the `HoliButtonTracked` or `HoliLinkTracked` components. Further tracking-enabled components will most likely be added over time. New tracking events can be added by extending `TrackingEvent`.
+
+Every custom event carries a `screen` property. `screen` is used to identify the actual application screen which emits the event so it is identical for all target platforms (web, iOS and Android). Otherwise, within PostHog there'd always be the need to match events on both URLs and screen names.
+
+## Sensitive data
+
+### IP-adresses
+
+IP-adresses are filtered out by a _Property Filter_ in Posthog (configured under "_Data pipeline_" → "_Property Filter_" → "_Configure_" in the Posthog-UI). This means the users IP-adresses are sent to Posthog but then discarded. It doesn't seem to be possible to configure the posthog libraries to not send IP-adresses. The Next.js proxy also does not replace the users IP-adresses with its own address so the users real adresses are still sent to Posthog. To prevent sending IP-adresses alltogether a proxy could be used that actively filteres out the adresses. We might decide to do that in the future.
+
+### Cookies
+
+Because tracking requests from the web frontend are sent to our Next.js backend all of our own (and possibly sensitive) cookies are sent in those requests. To prevent the cookies to be sent to posthog our tracking proxy in Next.js simply strips all cookies from the requests. Therefore we can't use cookies as persistence option for posthog-js and use local storage instead (this can be configured in the library initialization).
+
+### UTM-Parameters
+
+As of now tracking data is not used for marketing purposes. Therefore posthog-js is configured to discard all properties starting with "utm_" (that is client side and only concerning web). Otherwise posthog-js would default to automatically track UTM-Parameters.
