@@ -1,5 +1,6 @@
 import Drawio from "@theme/Drawio";
 import TrackingOverviewDrawio from "!!raw-loader!./img/tracking-overview.drawio";
+import TrackingConsentDrawio from "!!raw-loader!./img/tracking-consent.drawio";
 
 # Tracking
 
@@ -29,6 +30,34 @@ Tracking is configured using the env variables `POSTHOG_KEY` and `POSTHOG_HOST`.
 
 If either `POSTHOG_KEY` and `POSTHOG_HOST` is left blank tracking will be disabled for the environment.
 
+### Tracking Consent
+
+holi will never track a user without their explicit consent. This is both in line with our values but also a GDPR requirement. Therefore, at some point of time users see a tracking consent modal within the app. Consent can be given for every single purpose individually:
+
+* product analytics
+* personalization
+* marketing (planned, currently not implemented)
+
+Depending on if the user is logged in or not, tracking consent is stored *per purpose*:
+
+* when logged out
+  * in `AsyncStorage` (mobile) (key `HOLI_TRACKING_CONSENT`)
+  * in `LocalStorage` (web) (key `HOLI_TRACKING_CONSENT`)
+* when logged in
+  * in the user profile (backend side)
+
+The following diagram depicts the app initialization process:
+
+<Drawio content={TrackingConsentDrawio} style={{ width: "100%" }} />
+
+:::info
+To edit this diagram, import the source file in [draw.io](https://draw.io), edit and export as xml again.
+:::
+
+Please note that the PostHog client is initialized with opt-out by default so we don't accidentally track users before they explicitly gave consent.
+
+When a user logs out of holi, the `AsyncStorage`/`LocalStorage` consent state is being reset to "unknown". This is done because we assume that, if a user logs out from a device, the device is shared by multiple people and we don't want to track those other people without asking them for consent. As a consequence, users will see a tracking consent dialog again on that device shortly after.
+
 ### Events
 
 Posthog automatically captures pageview/-leave and generic click/touch events.
@@ -44,6 +73,8 @@ track(TrackingEvent.Registration.RegisterButtonPressed)
 ```
 
 or by using the `HoliButtonTracked` or `HoliLinkTracked` components. Further tracking-enabled components will most likely be added over time. New tracking events can be added by extending `TrackingEvent`.
+
+Every custom event carries a `screen` property. `screen` is used to identify the actual application screen which emits the event so it is identical for all target platforms (web, iOS and Android). Otherwise, within PostHog there'd always be the need to match events on both URLs and screen names.
 
 ## Sensitive data
 
