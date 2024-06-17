@@ -241,9 +241,15 @@ In very limited use-cases it is possible to suppress a hydration warning by sett
 - Only prevents warnings one level deep
 - Only works for differences in text content
 
+A typical use case would be formatted timestamps, as the timezone for server and client might differ.
+
+The helper component `SuppressSsrHydrationWarning` only accepting child components of type `string` was intruduced for this case.
+
 :::tip Example
 ```tsx
-<span suppressHydrationWarning>{isLoggedIn ? 'Logged in' : 'Logged out'}</span>
+<SuppressSsrHydrationWarning>
+  {isLoggedIn ? 'Logged in' : 'Logged out'}
+</SuppressSsrHydrationWarning>
 ```
 :::
 
