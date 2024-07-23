@@ -5,8 +5,8 @@ This document describes holis approach to server-side rendering and lists some g
 ##  Motivation
 
 The main reason to implement SSR was the requirement to directly answer requests with HTML that is enriched with meta tags for the following use cases:
-- SEO: meta tags for search results (title, description etc), possible also structured data following [schema.org](https://schema.org/) (author, date etc.)
-- Social media previews: [OpenGraph](https://www.opengraph.xyz/) meta tags
+- SEO: meta tags for search results (title, description etc), possible also structured data following [schema.org](https://schema.org/) (author, date etc.). For more information see [SEO meta tags](./seo-sitemap#seo-meta-tags).
+- Social media previews: [OpenGraph](https://ogp.me/) meta tags
 
 SSR can also bring performance improvements on web, as it reduces the perceived loading time for users.
 
@@ -72,7 +72,7 @@ Instead an [official example for Pages Router using Apollo by Next.js](https://g
 
 In general, implementing the function `getServerSideProps` activates SSR for a page. To facilitate this process and to achieve the behaviour described [above](#server-side-rendering-with-nextjs) the helper function `createServerSideProps` was created. This function allows the following optional arguments:
 - `queries`: Queries to be executed in advance to simplify or speed up the page rendering process (e.g. when queries are executed sequentially one after another) or handle 404/403 errors
-- `customProps`: Custom SEO props like (invisible) `h1` header or localized path names
+- `customProps`: Custom SEO props like (invisible) `h1` header or localized path names (see [SEO H1 Heading](./seo-sitemap#h1-heading))
 
 
 On pages with query parameters the usage of `useQuery(<param>)` can be reproduced by accessing `context.query.<param>` where `context` is the request context provided by Next.js.
