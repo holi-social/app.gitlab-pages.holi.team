@@ -30,7 +30,7 @@ See [holi-frontends/README](https://gitlab.holi.team/app/holi-frontends/#i18n-in
 - [ni18n](https://github.com/JCQuintas/ni18n) for [NextJS](https://nextjs.org/) integration and SSR
 - We support [internationalized routing](https://nextjs.org/docs/advanced-features/i18n-routing) on web by using sub-paths for the locale.
   - If the URL does not contain a locale sub-path, a redirect with adding the proper sub-path with the detected locale (`accept-language` header of the request) is performed (e.g. https://app.holi.social/spaces → https://app.holi.social/de/spaces).
-  - When deep linking on mobile, the locale sup-paths are ignored and the device language is used instead.
+  - When deep linking on mobile, the locale sub-paths are ignored and the device language is used instead.
   - Locale specific path names are supported (e.g. https://app.holi.social/de/spenden will be internally redirected to https://app.holi.social/de/donations without changing the URL), but only used for SEO (i.e. such path names will be exposed to search engines, but not be used for navigation inside the app)
 - We use [namespaces](https://www.i18next.com/principles/namespaces) to separate translations from the core application and different holi-apps
 - We use [Intl](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl) to provide locale data, e.g. for number or date formatting
