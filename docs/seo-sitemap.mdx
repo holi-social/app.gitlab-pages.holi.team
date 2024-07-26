@@ -1,0 +1,95 @@
+# SEO and Sitemap
+
+The sitemap serves as a guide for crawlers of search engines to index the pages of the holi app to increase the presence (and therefore findability) of holi inside search engines and control what content can be found.
+
+_How_ content can be found, i.e. which key words and search queries results from the holi app should be listed for, depends on the content of the page itself as well as SEO meta tags.
+
+## Sitemap
+
+The sitemap in general is a web only feature and not available for the mobile app at all. The initial index page can be found on https://app.holi.social/sitemap.xml.
+
+Its purpose is to control which pages are indexed by search engine crawlers without having to rely on each page being found by the crawlers through links from other pages.
+
+All pages related to the sitemap have to be rendered on the server side and use the `getServerSideProps` mechanism provided by Next.js as described in [Server-side rendering](./server-side-rendering#server-side-rendering-with-nextjs).
+
+### Crawler management
+
+In order to control how crawlers of search engines handle pages, a [`robots.txt`](https://app.holi.social/robots.txt) file is served by the holi web server .
+
+It prevents crawlers from indexing staging or review environments and provides a direct link to the sitemap. It also could be used to prevent crawlers from visiting pages, but should not be used to exclude pages from search engines (this should be done using specific [SEO meta tags](#holihead)).
+
+Next.js does not support plain text responses by default, which is why a special rewrite rule had to be added to the Next.js config to allow the `.txt` ending. The content type `text/plain` had to be set manually in the response headers as well.
+
+### Sitemap structure
+
+Sitemaps are basically just lists of URLs in XML format. There are two variants that can be used to organize all URLs in a tree-like structure:
+- [Sitemap index pages](https://developers.google.com/search/docs/crawling-indexing/sitemaps/large-sitemaps): Include list of links to other sitemap pages
+- [Sitemap url sets](https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap): Include lists of links to actual pages of the application
+
+Some of the URLs to holi pages that should be indexed by search engines are static and can be hard-coded, while other have to be dynamically created. E.g. URLs to insights and related content require that all existing insights are fetched via API. However, there are certain limits to the size of sitemap URL sets and index pages, so e.g. a sitemap [may not contain more than 50.000 entries](https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap).
+
+To ensure these limits are not exceeded and the sitemap is kept future-proof without the need for a lot of maintenance while the application and amount of content continues to grow, pagination is used as an approch for dynamic parts of the sitemap. This also reduces the pressure on the holi API as well as the rendering time of the sitemap pages. The idea is to divide long lists of dynamically fetched links into paginated URL sets, that are listed themselves on special sitemap index pages.
+
+As holi supports multiple locales and in some cases also locale specific URLs, all locale specific variants have to be listed the way they should be indexed by search engines. This is achieved by creating a "top level" index page listing links to all locale specific sitemaps, which themselves only handle one specific locale.
+
+:::tip Example
+Structure of the holi sitemaps (each sitemap index page includes the links to the level below)
+```
+  # Top level sitemap index page, not locale specific
+- /sitemap.xml
+
+    # URL set of static URLs
+  - /en/sitemap/static.xml
+  - /de/sitemap/statix.xml
+  - ...
+
+    # Sitemap index page for paginated URL sets for insights
+  - /en/sitemap/insights.xml
+      # URL set of all pages related to each page of insights
+    - /en/sitemap/insights/0.xml
+    - /en/sitemap/insights/1.xml
+    - ...
+  - /de/sitemap/insights.xml
+    - /de/sitemap/insights/0.xml
+    - /de/sitemap/insights/1.xml
+    - ...
+
+  - ...
+```
+:::
+
+### Implementation
+
+All pages related to the sitemap have to be rendered on the server side and use the `getServerSideProps` mechanism provided by Next.js as described in [Server-side rendering](./server-side-rendering#server-side-rendering-with-nextjs).
+
+Next.js does support the `.xml` extension in general, so there is no need to add rewrite rules for all parts of the sitemap, as simple pages can be created as `<name-of-sitemap>.xml.ts` files. However, this does not work in combination with dynamic page parameters (e.g. used for pagination) which again require configuration of rewrite rules. The content type `text/xml` also has to be set manually in the response headers.
+
+There are helper methods to generate XML content for sitemap index pages (`generateSitemapIndex`) and URL sets (`generateSitemapUrlSet`) by providing a list of URLs which also ensure that all URLs are absolute as that is required by search engines.
+
+### Performance insights and re-indexing
+
+The [Google Search Console](https://search.google.com/search-console) (limited access) provides some insights into the performance of holi in Google search results. It also allows re-submitting the sitemap to enforce re-indexing of the holi pages. (Note: This process might take [days or even weeks](https://developers.google.com/search/docs/crawling-indexing/ask-google-to-recrawl).)
+
+## SEO meta tags
+
+Search engines do not only consider the visible content when adding a page to their index, but also special meta tags and headlines. To ensure that all necessary data is available without having to wait for execution of JavaScript, these tags are already added during [server-side rendering](./server-side-rendering).
+
+### H1 Heading
+
+Search engines may use the top level H1 heading of a page for matching key words. If the existing H1 heading does not provide any relevant information, a "hidden" H1 heading can be added by providing an i18n key as `seoTitle` as prop to [`createServerSideProps`](./server-side-rendering#creating-server-side-props).
+
+:::caution
+It is considered best practice to only provide a single H1 heading per page - not only for SEO purposes but also for accessibility, so e.g. screen readers can recognize the correct ranking of all headlines.
+:::
+
+### HoliHead
+
+`HoliHead` was added as a special component to control all relevant meta tags to pages for SEO as well as social media links while also providing sensible fallback values. As the meta tags are only relevant on web and the implementation is specific to Next.js, the component is not rendered on mobile.
+
+The component can render tags for the following SEO relevant information:
+- Title
+- Description
+- Canonical and alternate (locale specific) URLs
+- Special meta tag to prevent indexing the page by search engines
+
+The same component is also used for [OpenGraph](https://ogp.me/) meta tags that control how the page is previewed when shared via social media, as most of the tags have the same or very similar content.
