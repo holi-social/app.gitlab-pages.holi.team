@@ -26,7 +26,7 @@ Sitemaps are basically just lists of URLs in XML format. There are two variants 
 - [Sitemap index pages](https://developers.google.com/search/docs/crawling-indexing/sitemaps/large-sitemaps): Include list of links to other sitemap pages
 - [Sitemap url sets](https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap): Include lists of links to actual pages of the application
 
-Some of the URLs to holi pages that should be indexed by search engines are static and can be hard-coded, while other have to dynamically created. E.g. URLs to insights and related content requires fetching all existing insights via API. However, there are certain limits to the size of sitemap URL sets and index pages, so e.g. a sitemap [may not contain more than 50.000 entries](https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap).
+Some of the URLs to holi pages that should be indexed by search engines are static and can be hard-coded, while other have to be dynamically created. E.g. URLs to insights and related content require that all existing insights are fetched via API. However, there are certain limits to the size of sitemap URL sets and index pages, so e.g. a sitemap [may not contain more than 50.000 entries](https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap).
 
 To ensure these limits are not exceeded and the sitemap is kept future-proof without the need for a lot of maintenance while the application and amount of content continues to grow, pagination is used as an approch for dynamic parts of the sitemap. This also reduces the pressure on the holi API as well as the rendering time of the sitemap pages. The idea is to divide long lists of dynamically fetched links into paginated URL sets, that are listed themselves on special sitemap index pages.
 
@@ -79,7 +79,7 @@ Search engines do not only consider the visible content when adding a page to th
 Search engines may use the top level H1 heading of a page for matching key words. If the existing H1 heading does not provide any relevant information, a "hidden" H1 heading can be added by providing an i18n key as `seoTitle` as prop to [`createServerSideProps`](./server-side-rendering#creating-server-side-props).
 
 :::caution
-It is considered best practice to only provide a single H1 heading per page - not only for SEO purposes but also for accessibility, so e.g. screen readers can recognize out the correct ranking of all headlines.
+It is considered best practice to only provide a single H1 heading per page - not only for SEO purposes but also for accessibility, so e.g. screen readers can recognize the correct ranking of all headlines.
 :::
 
 ### HoliHead
