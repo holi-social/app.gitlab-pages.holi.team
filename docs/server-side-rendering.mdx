@@ -34,6 +34,10 @@ During server-side rendering two types of props are added to the server response
 - i18n locale and translations
 
   The requests locale is determined by Next.js (locale subpath or `accept-language` header). The detected `locale` as well as all translations for this locale are added to the props provided to the client, so that it can be used there for initializing the `i18n` context. (For more information on holis i18n solution, see [Internationalization](./internationalisation.mdx))
+- Feature flags
+
+  The current state of feature flags (configured in Posthog, see [Tracking](./tracking.mdx)) is fetched and passed on via props to be used as initial state on the client side as well.
+
 - Apollo cache
   
   When the page is fully rendered on the server side i.e. all relevant queries were executed, the query cache on the server side contains all data that would also be needed to render the same page on client side. The server cache is serialized and added to the page props, and deserialized on the client-side to initialize the client-side Apollo cache.
@@ -61,7 +65,7 @@ However, it would require further investigation to find out if this model is com
 :::
 
 :::info
-Holis SSR implementation does not strictly follow the [recommended approach by Apollo](https://www.apollographql.com/docs/react/performance/server-side-rendering/#executing-queries-with-getdatafromtree). Apollo suggests to use `getDataFromTree` to collect all queries for the page to render. However during implementation it became apparent this does not readily support sequential queries (e.g. when pages are protected by feature toggles) and error cases like 404 were not handled properly.
+Holis SSR implementation does not strictly follow the [recommended approach by Apollo](https://www.apollographql.com/docs/react/performance/server-side-rendering/#executing-queries-with-getdatafromtree). Apollo suggests to use `getDataFromTree` to collect all queries for the page to render. However during implementation it became apparent this does not readily support sequential queries (i.e. cases were one query depends on the results of another) and error cases like 404 were not handled properly.
 Instead an [official example for Pages Router using Apollo by Next.js](https://github.com/vercel/next.js/tree/4466ba436b996263307171d344cca199e8087744/examples/with-apollo) was combined with direct application of the mechanisms used inside Apollos `getDataFromTree` inspired by a [Next.js discussion](https://github.com/vercel/next.js/discussions/15736#discussioncomment-6385504), so that it is not necessary to manually list all required queries.
 :::
 
@@ -135,10 +139,6 @@ export const getServerSideProps = async (context: NextPageContext) => {
   return createServerSideProps(context, queries)
 }
 ```
-:::
-
-:::info
-`createServerSideProps` will always fetch all feature toggles as those are basically used on all pages and usually cause sequential queries.
 :::
 
 :::caution
