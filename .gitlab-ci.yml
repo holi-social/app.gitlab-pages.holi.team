@@ -1,4 +1,4 @@
-image: 'europe-north1-docker.pkg.dev/holi-shared/docker-hub-remote/node:18-alpine'
+image: 'europe-north1-docker.pkg.dev/holi-shared/docker-hub-remote/node:22-alpine'
 
 stages:
   - test
