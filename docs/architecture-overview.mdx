@@ -134,3 +134,9 @@ We use a EU-hosted variant of [Novu](https://novu.co) to deliver in-app notifica
 To forward the required data, our social core (Okuna) subscribes user emails and push tokens to novu as a side effect of handling users and their social interactions.
 The mobile clients [receive push messages](./push-notifications) via platform-specific providers.
 All clients connect to novu cloud [securely](./authentication-authorization/third-party-integrations#securing-the-notification-content) to fetch and acknowledge In-App notifications and allow users to manage their notification preferences.
+
+## Translation / LibreTranslate
+holi integrates [LibreTranslate](https://github.com/LibreTranslate/LibreTranslate), an open-source machine translation API, to handle translation tasks within the app. 
+
+- [holi-translation-api](https://gitlab.holi.team/app/holi-translation-api): Manages requests and interactions with the translation service, enabling users to request translations of posts, comments, and other text content.
+- [holi-libretranslate](https://gitlab.holi.team/app/holi-libretranslate): Deploys and maintains the self-hosted [LibreTranslate](https://github.com/LibreTranslate/LibreTranslate) service.
