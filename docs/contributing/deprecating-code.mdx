@@ -1,0 +1,25 @@
+---
+title: Deprecating Code
+---
+
+## Rules for deprecating code
+
+* Deprecations *shall* be marked in code (There's multiple ways, especially across different languages, use the standard way the language provides. When in doubt, include the word deprecation/deprecated somewhere, so automation can find the occurrences).
+* These markers *shall* contain either a date the deprecation happened, or a version in which the code can be removed (or both)
+* If the code has a replacement/migration path, the marker *shall* point to the replacing functionality (Ease of migration for future devs/selves)
+* They *shall* also contain a team assignment (Who takes responsibility for removing the code in the future)
+* They *may* include a Jira ticket number (For giving context of the cause of deprecation)
+* If removing the code is not straightforward (e.g. first the clients need to be changed before backend removal or similar complexities), then these markers *shall* contain a description of how the removal can happen or of the difficulties involved if the process is unclear at the time of writing.
+
+## Reasoning
+
+There are multiple reasons we can't just delete code sometimes. Some include:
+
+* Microservice Architecture: In order to remove code from a service's API, we need to first remove the calls from any consumers.
+* Support for multiple Client Versions (Mobile App Versions): Deletion of API endpoints for clients can only happen after all supported client versions are not depending on the deprecated call.
+
+Therefore, such code must be deprecated first, and can only be deleted after all consumers/clients are updated. The rules above are constructed to facilitate the deletion step:
+
+* Determining whether/when deprecated code can be deleted with little effort, e.g. when developing in close proximity,
+* Making knowledge on how to remove code explicit in (inline) documentation,
+* Compiling a list of open deprecations for measuring and managing complexity,
