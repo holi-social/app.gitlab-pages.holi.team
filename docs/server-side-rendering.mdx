@@ -30,13 +30,13 @@ As all required data can already be fetched on the server-side, it is possible t
 
 In order to achieve equality between the HTML generated on both server and client side, Next.js supports adding props to the server response that can be used on the client side as well. This is done by implementing [`getServerSideProps`](https://nextjs.org/docs/pages/building-your-application/data-fetching/get-server-side-props) for each page that should support SSR.
 
-During server-side rendering two types of props are added to the server response:
+During server-side rendering the following props are added to the server response:
 - i18n locale and translations
 
   The requests locale is determined by Next.js (locale subpath or `accept-language` header). The detected `locale` as well as all translations for this locale are added to the props provided to the client, so that it can be used there for initializing the `i18n` context. (For more information on holis i18n solution, see [Internationalization](./internationalisation.mdx))
 - Feature flags
 
-  The current state of feature flags (configured in Posthog, see [Tracking](./tracking.mdx)) is fetched and passed on via props to be used as initial state on the client side as well.
+  The current state of feature flags for the current user (configured in Posthog, see [Tracking](./tracking.mdx)) is fetched and passed on via props to be used as initial state on the client side as well.
 
 - Apollo cache
   
@@ -76,6 +76,8 @@ Instead an [official example for Pages Router using Apollo by Next.js](https://g
 
 In general, implementing the function `getServerSideProps` activates SSR for a page. To facilitate this process and to achieve the behaviour described [above](#server-side-rendering-with-nextjs) the helper function `createServerSideProps` was created. This function allows the following optional arguments:
 - `queries`: Queries to be executed in advance to simplify or speed up the page rendering process (e.g. when queries are executed sequentially one after another) or handle 404/403 errors
+
+    A query to fetch the currently user if logged in is always executed and does not have to be added manually.
 - `customProps`: Custom SEO props like (invisible) `h1` header or localized path names (see [SEO H1 Heading](./seo-sitemap#h1-heading))
 
 
@@ -150,16 +152,10 @@ The client-side Apollo client is only able to use the cache results if the varia
 To prevent errors during hydration and shorten the perceived loading time for users, the client should use the cache state that was "prewarmed" during SSR. When using a query like `const { loading, data } = useQuery(...)`
 the `data` might already be present during the initial render, so might not always be necessary to display a loading state if `loading` is true.
 
-:::caution
-The SSR implementation currently assumes logged-out users for all queries, as the main reason was to support SEO and other meta tags. If a query is expected to return differing data for a logged-in user (e.g. a space member), the data should be refreshed on the client side, e.g. by setting the `fetchPolicy` to `cache-and-network` or something similar.
-:::
-
 :::tip Example
 ```tsx
 const ExampleScreen = () => {
-  const { loading, data } = useQuery(loginDependingQuery, {
-    fetchPolicy: isSSR ? 'cache-first' : 'cache-and-network',
-  })
+  const { loading, data } = useQuery(exampleQuery)
 
   if (loading && !data) { // data might already be present in the cache!
     return <LoadingScreen />
@@ -169,6 +165,9 @@ const ExampleScreen = () => {
 }
 ```
 :::
+
+The helper function `createServerSideProps` always fetches the current user if logged in to pre-warm the cache. This is used by the hook `useLoggedInUser` to determine the same login state for both server and client and should be used whenever a SSR relevant component requires the login state or user object. It also ensures to load the user properly on mobile or web pages that do not support SSR.
+
 
 ### Handling differences between server and client
 
@@ -222,18 +221,6 @@ const Component = () => {
 
 Usages of `useLayoutEffect` will result in [warnings](https://reactjs.org/link/uselayouteffect-ssr) during SSR and should be replaced by `useEffect` instead, or `useIsomorphicLayoutEffect` if the behaviour should be kept on mobile.
 
-#### Access restrictions
-
-Pages or components that should only be visible to logged-in users or require specific permissions should be wrapped inside a `PermissionsGuard`. This will prevent rendering the component during SSR and check for the permissions on the client side.
-
-:::tip Example
-```tsx
-<PermissionsGuard permissionType={PermissionsType.AUTH}>
-  <LoggedInOnlyComponent />
-</PermissionsGuard>
-```
-:::
-
 #### Suppressing warnings
 
 In very limited use-cases it is possible to suppress a hydration warning by setting the prop `suppressHydrationWarning`:
@@ -243,12 +230,12 @@ In very limited use-cases it is possible to suppress a hydration warning by sett
 
 A typical use case would be formatted timestamps, as the timezone for server and client might differ.
 
-The helper component `SuppressSsrHydrationWarning` only accepting child components of type `string` was intruduced for this case.
+The helper component `SuppressSsrHydrationWarning` only accepting child components of type `string` was introduced for this case.
 
 :::tip Example
 ```tsx
 <SuppressSsrHydrationWarning>
-  {isLoggedIn ? 'Logged in' : 'Logged out'}
+  {new Date().toLocaleString()}
 </SuppressSsrHydrationWarning>
 ```
 :::
