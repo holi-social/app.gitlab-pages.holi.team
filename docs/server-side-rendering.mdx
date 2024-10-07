@@ -38,6 +38,10 @@ During server-side rendering the following props are added to the server respons
 
   The current state of feature flags for the current user (configured in Posthog, see [Tracking](./tracking.mdx)) is fetched and passed on via props to be used as initial state on the client side as well.
 
+- User state
+
+  We fetch the current user to determine the login state and pass on information about the success as page props to speed up and synchronize intialization of the login state on the client side.
+
 - Apollo cache
   
   When the page is fully rendered on the server side i.e. all relevant queries were executed, the query cache on the server side contains all data that would also be needed to render the same page on client side. The server cache is serialized and added to the page props, and deserialized on the client-side to initialize the client-side Apollo cache.
@@ -166,7 +170,7 @@ const ExampleScreen = () => {
 ```
 :::
 
-The helper function `createServerSideProps` always fetches the current user if logged in to pre-warm the cache. This is used by the hook `useLoggedInUser` to determine the same login state for both server and client and should be used whenever a SSR relevant component requires the login state or user object. It also ensures to load the user properly on mobile or web pages that do not support SSR.
+The helper function `createServerSideProps` always fetches the current user if logged in to pre-warm the cache and add page props about the login state. The page props are used to synchronize the inital login state between web server and client. The hook `useLoggedInUser` then also checks the cache for an already loaded user and should be used whenever a SSR relevant component requires the login state or user object. It also ensures to load the user properly on mobile or web pages that do not support SSR.
 
 
 ### Handling differences between server and client
