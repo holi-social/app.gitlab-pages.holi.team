@@ -1,0 +1,40 @@
+import Drawio from "@theme/Drawio";
+import ChatOverviewDrawio from "!!raw-loader!./img/chat-overview.drawio";
+import ChatFrontendDrawio from "!!raw-loader!./img/chat-frontend.drawio";
+
+# Chat
+
+Holi chat is built on top of [Matrix](https://matrix.org) and uses [Synapse](https://github.com/element-hq/synapse) as a Matrix Server.
+
+The frontend client is custom built in react native, but uses the [Matrix JavaScript SDK](https://github.com/matrix-org/matrix-js-sdk) to talk to Matrix.
+The frontend uses [Jotai](https://jotai.org/) to manage local state and state updates. State changes are pushed from the matrix server to the frontend as events.
+Technically the Matrix SDK uses long polling to handle server pushed events.
+
+The client applications connect to the matrix server directly.
+Authentication is managed via single sign on. [See](./authentication-authorization/third-party-integrations#login-to-the-matrix-server)
+
+In addition, there is a service [holi-chat-integration](https://gitlab.holi.team/app/holi-chat-integration) that connects to the Matrix Server to control
+chat rooms that are created for Spaces. holi-chat-integration does not use the Matrix SDK, but instead sends REST calls "manually". The reason for this is,
+that the chat-integration is not listening to matrix events. It is only sending commands to the Matrix server or queries the Matrix server explicitly.
+Some of the calls are done via the [Synapse Admin API](https://element-hq.github.io/synapse/latest/usage/administration/admin_api/index.html).
+In addition the chat integration also uses it's own user to create and manage rooms.
+The chat-integration listens for events published by Okuna via pubsub.
+
+### Chat Frontend general Structure
+
+<Drawio content={ChatOverviewDrawio} style={{ width: "100%" }} />
+
+The SDK does all the communication with the Matrix Server.
+Sending commands to the Matrix server happens, because a user is interaction with a Component e.g. send a message or start a new chat. For this, chat components can have "actions",
+which call our chat client, which internally uses the SDK to communicate the command to the Matrix server.
+
+The other for of communication is Matrix Events, that are pushed from the Matrix server to the client. We register an EventTransformer to the SDK, that transforms incoming
+Matrix events into a form that is more suited to our needs. The transformed events are passed on to the store, that manages the local state in Jotai Atoms.
+
+Components read Jotai Atoms to display Chat content, like received messages or room data, like names etc.
+
+### Chat Frontend Atom structure
+
+<Drawio content={ChatFrontendDrawio} style={{ width: "100%" }} />
+
+In addition to Jotai, Chat also uses [Immer](https://immerjs.github.io/immer/) to detect partial updates and prevent unnecessary rerendering.
