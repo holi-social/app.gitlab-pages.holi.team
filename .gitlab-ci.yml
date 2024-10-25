@@ -1,4 +1,7 @@
-image: 'europe-north1-docker.pkg.dev/holi-shared/docker-hub-remote/node:22-slim'
+default:
+  image: 'europe-north1-docker.pkg.dev/holi-shared/docker-hub-remote/node:22-slim'
+  tags:
+    - 1cpu-4gb
 
 stages:
   - test
