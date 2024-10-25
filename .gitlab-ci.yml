@@ -10,7 +10,7 @@ stages:
 test:
   stage: test
   script:
-  - yarn install
+  - yarn install --immutable --check-cache
   - yarn graphql-to-doc
   - yarn build
   except:
@@ -19,7 +19,7 @@ test:
 pages:
   stage: deploy
   script:
-  - yarn install
+  - yarn install --immutable --check-cache
   - yarn graphql-to-doc
   - yarn build
   - mv build/ public/
