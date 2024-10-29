@@ -12,7 +12,6 @@ default:
     # egrep: Remove sensitive information from the output of env
     - env -0 | sort -z | tr '\0' '\n' | egrep -ve '^(DOCKER_AUTH_CONFIG|GOOGLE_APPLICATION_CREDENTIALS)=.*'
     - corepack enable
-    - yarn config set cacheFolder $YARN_CACHE_FOLDER
 
 .yarn-cache-rw:
   key:
