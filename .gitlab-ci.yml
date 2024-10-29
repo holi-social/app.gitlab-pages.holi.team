@@ -25,7 +25,6 @@ test:
   stage: test
   cache: !reference [.yarn-cache]
   script:
-    - 
     - yarn install --immutable
     - yarn graphql-to-doc
     - yarn build
