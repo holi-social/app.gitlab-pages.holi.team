@@ -1,5 +1,5 @@
 variables:
-  YARN_CACHE_FOLDER: './.yarn/cache'
+  YARN_CACHE_FOLDER: $CI_PROJECT_DIR/.yarn/cache
 
 default:
   image: 'europe-north1-docker.pkg.dev/holi-shared/docker-hub-remote/node:22-slim'
