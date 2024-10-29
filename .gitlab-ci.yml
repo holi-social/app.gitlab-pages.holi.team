@@ -3,26 +3,36 @@ default:
   tags:
     - 1cpu-4gb
 
+.yarn-cache:
+  key:
+    files:
+      - yarn.lock
+  paths:
+    - .yarn/
+  policy: pull-push
+
 stages:
   - test
   - deploy
 
 test:
   stage: test
+  cache: !reference [.yarn-cache]
   script:
-  - yarn install --immutable --immutable-cache
-  - yarn graphql-to-doc
-  - yarn build
+    - yarn install --immutable --immutable-cache
+    - yarn graphql-to-doc
+    - yarn build
   except:
     - main
 
 pages:
   stage: deploy
+  cache: !reference [.yarn-cache]
   script:
-  - yarn install --immutable --immutable-cache
-  - yarn graphql-to-doc
-  - yarn build
-  - mv build/ public/
+    - yarn install --immutable --immutable-cache
+    - yarn graphql-to-doc
+    - yarn build
+    - mv build/ public/
   artifacts:
     paths:
     - public
