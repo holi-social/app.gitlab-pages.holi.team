@@ -1,5 +1,5 @@
 variables:
-  YARN_CACHE_FOLDER: .yarn
+  YARN_CACHE_FOLDER: './.yarn/cache'
 
 default:
   image: 'europe-north1-docker.pkg.dev/holi-shared/docker-hub-remote/node:22-slim'
@@ -25,7 +25,8 @@ test:
   stage: test
   cache: !reference [.yarn-cache]
   script:
-    - yarn install --immutable --immutable-cache
+    - 
+    - yarn install --immutable
     - yarn graphql-to-doc
     - yarn build
   except:
@@ -35,7 +36,7 @@ pages:
   stage: deploy
   cache: !reference [.yarn-cache]
   script:
-    - yarn install --immutable --immutable-cache
+    - yarn install --immutable
     - yarn graphql-to-doc
     - yarn build
     - mv build/ public/
