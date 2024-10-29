@@ -38,6 +38,8 @@ install_deps:
   cache: !reference [.yarn-cache-rw]
   script:
     - yarn install --immutable
+  rules:
+    - changed: yarn.lock
 
 .build:
   stage: build
