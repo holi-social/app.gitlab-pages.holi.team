@@ -39,7 +39,9 @@ install_deps:
   script:
     - yarn install --immutable
   rules:
-    - changed: yarn.lock
+    - if: $CI_COMMIT_BRANCH
+      changes: 
+      - yarn.lock
 
 .build:
   stage: build
