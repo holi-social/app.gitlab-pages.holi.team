@@ -6,6 +6,10 @@ default:
   tags:
     - 1cpu-4gb
   before_script:
+    - set -ex
+    # env -0 | sort -z | tr '\0' '\n': Sort env output alphabetically, keeping multiline variables intact
+    # egrep: Remove sensitive information from the output of env
+    - env -0 | sort -z | tr '\0' '\n' | egrep -ve '^(DOCKER_AUTH_CONFIG|GOOGLE_APPLICATION_CREDENTIALS)=.*'
     - corepack enable
     - yarn config set cache-folder $YARN_CACHE_FOLDER
 
@@ -50,7 +54,7 @@ install_deps:
 test:
   extends: .build
   rules:
-    - if: $CI_COMMIT_BRANCH != 'main'
+    - if: $CI_COMMIT_BRANCH && $CI_COMMIT_BRANCH != 'main'
 
 pages:
   extends: .build
