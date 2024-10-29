@@ -1,7 +1,11 @@
+variables:
+  YARN_CACHE_FOLDER: .yarn
+
 default:
   image: 'europe-north1-docker.pkg.dev/holi-shared/docker-hub-remote/node:22-slim'
   tags:
     - 1cpu-4gb
+
 
 .yarn-cache:
   key:
