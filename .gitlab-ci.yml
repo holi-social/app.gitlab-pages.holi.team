@@ -5,6 +5,8 @@ default:
   image: 'europe-north1-docker.pkg.dev/holi-shared/docker-hub-remote/node:22-slim'
   tags:
     - 1cpu-4gb
+  before_script:
+    - corepack enable
 
 
 .yarn-cache:
