@@ -8,7 +8,7 @@ default:
   before_script:
     - corepack enable
 
-.yarn-cache:
+.yarn-cache-rw:
   key:
     files:
       - yarn.lock
@@ -16,31 +16,48 @@ default:
     - .yarn/
   policy: pull-push
 
+.yarn-cache-readonly:
+  key:
+    files:
+      - yarn.lock
+  paths:
+    - .yarn/
+  policy: pull
+
 stages:
+  - build
   - test
   - deploy
 
-test:
-  stage: test
-  cache: !reference [.yarn-cache]
+install_deps:
+  stage: build
+  cache: !reference [.yarn-cache-rw]
   script:
     - yarn install --immutable
+
+.build:
+  stage: build
+  needs: 
+    - job: install_deps
+      optional: true
+  cache: !reference [.yarn-cache-readonly]
+  script:
+    - yarn install --immutable --immutable-cache
     - yarn graphql-to-doc
     - yarn build
-  except:
-    - main
+
+test:
+  extends: .build
+  rules:
+    - if: $CI_COMMIT_BRANCH != 'main'
 
 pages:
-  stage: deploy
-  cache: !reference [.yarn-cache]
-  script:
-    - yarn install --immutable
-    - yarn graphql-to-doc
-    - yarn build
+  extends: .build
+  after_script:
     - mv build/ public/
   artifacts:
     paths:
     - public
-  only:
-    - main
+  rules:
+    - if: $CI_COMMIT_BRANCH == 'main'
 
