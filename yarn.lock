@@ -1851,12 +1851,11 @@
     value-or-promise "^1.0.12"
 
 "@graphql-tools/url-loader@^8.0.0":
-  version "8.0.9"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/url-loader/-/url-loader-8.0.9.tgz#4ce2e9922fecf9f17d45f5bc7cf23bfd2dcb0613"
-  integrity sha512-SilKKDXuEBBuzmnAP2sEYBgCaEeqgTWG0HmD4gANemYoP3oy5sxITtla7Zo1qj7CbmUs7ve2tvqic2vp6+cOMA==
+  version "8.0.10"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/url-loader/-/url-loader-8.0.10.tgz#4aa4e01d9a253a722d45527513c012959d6ac876"
+  integrity sha512-w3DWNIk8zKp48Ik9fc3WP2I5Nhp+QU0TfBM/a2O+vJsSfpB1LXnKBhMlVRZviWRNyfa96Tm9/iM8hTZAKt1AVw==
   dependencies:
     "@ardatan/sync-fetch" "^0.0.1"
-    "@graphql-tools/delegate" "^10.0.28"
     "@graphql-tools/executor-graphql-ws" "^1.3.1"
     "@graphql-tools/executor-http" "^1.1.7"
     "@graphql-tools/executor-legacy-ws" "^1.1.1"
