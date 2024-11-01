@@ -1,1 +1,33 @@
+import Drawio from "@theme/Drawio";
+import ArchitectureOverviewDrawio from "!!raw-loader!../img/machine-learning-overview.drawio";
+
 # Machine Learning
+
+## Overview
+
+<Drawio content={ArchitectureOverviewDrawio} style={{ width: "100%" }} />
+
+:::info
+To edit this diagram, import the source file in [draw.io](https://draw.io), edit and export as xml again.
+:::
+
+This picture depicts the *current* machine learning architecture in a high-level way. It shows the first recommendation
+service (for volunteering opportunities) and roughly depicts the flow of data throughout the architecture.
+
+holi is just at the start of its ML journey and this architecture documentation is expected to see frequent updates.
+
+In order to serve recommendations for volunteering opportunities, the following steps are run:
+
+1. The Voltastics Crawler runs as part of a nightly Google Cloud Run job. It crawls all of betterplace.org and stores
+   the results within BigQuery.
+2. The data pipeline (source see [holi-data-classification](http://gitlab.holi.team/app/holi-data-classification/))
+   then determines which of the crawled volunteering opportunities were new, updated or deleted.
+3. For new and updated items, it runs a classification using Google Cloud AI services. The results are
+   * a vector of similarities to all interests and skills a holi user can select for themselves in their profile
+     settings.
+   * a vector of similarities of the volunteering opportunity to other volunteering opportunities.
+4. A last step in the data pipeline exports the volunteering opportunity items, along with the 2 classifications, into
+   a Postgres database with the vector extension.
+5. The volunteering service serves recommendations for users from the Postgres DB, based on either
+   * the users interests and skills (personal recommendation), or
+   * a given volunteering opportunity (similarity recommendation)

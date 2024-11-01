@@ -1,0 +1,64 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15" version="24.8.3">
+  <diagram name="Page-1" id="YFdmROCU8NWc3pjXxlPk">
+    <mxGraphModel dx="2074" dy="1162" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="vQoG-rdU6RPMNMaXqKQH-2" value="BigQuery" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;spacing=2;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="339" y="505" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="vQoG-rdU6RPMNMaXqKQH-3" value="Betterplace Crawler" style="shape=hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
+          <mxGeometry x="50" y="380" width="140" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="vQoG-rdU6RPMNMaXqKQH-4" value="Voltastics Crawler" style="shape=hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
+          <mxGeometry x="50" y="430" width="140" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="vQoG-rdU6RPMNMaXqKQH-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="vQoG-rdU6RPMNMaXqKQH-4" target="vQoG-rdU6RPMNMaXqKQH-2">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="120" y="545" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="vQoG-rdU6RPMNMaXqKQH-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0;entryDx=0;entryDy=27.5;entryPerimeter=0;" edge="1" parent="1" source="vQoG-rdU6RPMNMaXqKQH-3" target="vQoG-rdU6RPMNMaXqKQH-2">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="220" y="400" />
+              <mxPoint x="220" y="533" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="vQoG-rdU6RPMNMaXqKQH-7" value="Data Pipelines" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="279" y="370" width="240" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="vQoG-rdU6RPMNMaXqKQH-8" value="Google Cloud AI&lt;div&gt;services&lt;/div&gt;" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="309" y="250" width="180" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="vQoG-rdU6RPMNMaXqKQH-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="vQoG-rdU6RPMNMaXqKQH-9" target="vQoG-rdU6RPMNMaXqKQH-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="vQoG-rdU6RPMNMaXqKQH-9" value="Postgres" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;spacing=2;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="560" y="505" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="vQoG-rdU6RPMNMaXqKQH-10" value="Volunteering Service" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="560" y="350" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="vQoG-rdU6RPMNMaXqKQH-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;startArrow=classic;startFill=1;" edge="1" parent="1" source="vQoG-rdU6RPMNMaXqKQH-7" target="vQoG-rdU6RPMNMaXqKQH-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="vQoG-rdU6RPMNMaXqKQH-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="vQoG-rdU6RPMNMaXqKQH-7" target="vQoG-rdU6RPMNMaXqKQH-9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="vQoG-rdU6RPMNMaXqKQH-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="vQoG-rdU6RPMNMaXqKQH-15" target="vQoG-rdU6RPMNMaXqKQH-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="vQoG-rdU6RPMNMaXqKQH-15" value="Unified API&lt;br&gt;(GraphQL Mesh)" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="535" y="210" width="170" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="vQoG-rdU6RPMNMaXqKQH-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0.933;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="vQoG-rdU6RPMNMaXqKQH-7" target="vQoG-rdU6RPMNMaXqKQH-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
