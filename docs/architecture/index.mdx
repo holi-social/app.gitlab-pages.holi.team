@@ -1,5 +1,5 @@
 import Drawio from "@theme/Drawio";
-import ArchitectureOverviewDrawio from "!!raw-loader!./img/architecture-overview.drawio";
+import ArchitectureOverviewDrawio from "!!raw-loader!../img/architecture-overview.drawio";
 
 # Architecture Overview
 
@@ -29,7 +29,7 @@ To edit this diagram, import the source file in [draw.io](https://draw.io), edit
 
 HOLI uses [Ory Cloud](https://www.ory.sh/cloud/) as an identity provider. Oathkeeper is an API gateway (aka
 reverse proxy) that can enforce authentication and optionally authorization for backend services.
-See [Authentication & Authorization](./authentication-authorization) for more details. The deployment
+See [Authentication & Authorization](../authentication-authorization) for more details. The deployment
 and configuration code is contained in the [holi-unified-api](https://gitlab.holi.team/app/holi-unified-api)
 repository (also see below).
 
@@ -56,8 +56,8 @@ by [Matrix](https://matrix.org/), a decentralised and real-time communication se
 Postgres instance that we are using for Okuna. The users are created using a unique identity created during
 the account creation and stored in Ory (owner of the identities) and Okuna (to be able to synchronize the
 data between the chat users and their profiles stored in Okuna), see
-[Registration & Login](./authentication-authorization/registration-login) and
-[Integrations](./authentication-authorization/third-party-integrations) for details.
+[Registration & Login](../authentication-authorization/registration-login) and
+[Integrations](../authentication-authorization/third-party-integrations) for details.
 
 ### Matrix Push Gateway (Sygnal)
 
@@ -107,7 +107,7 @@ services or even frontend applications.
 
 HOLIs chosen integration technology is a pub/sub network. Currently this is
 [Google Cloud Pub/Sub](https://cloud.google.com/pubsub/). Events are defined in
-[Integration Events](./integration-events). All services may publish and/or consume events.
+[Integration Events](../integration-events). All services may publish and/or consume events.
 
 ## Data Pipelines / Recommendation Service
 
@@ -116,6 +116,9 @@ for its users. For this several data pipelines have, in principal, access to dat
 databases, receive domain events from the internal Pub/Sub and can run arbitrary computations using Google
 Cloud services like Google Cloud Run jobs. The resulting recommendations are then stored in a Postgres DB
 to be served to end users by the Recommendation Service.
+
+Go to [Machine Learning](./machine-learning) to learn more about holis data pipelines and recommendation
+service.
 
 ## Postgres / PostGIS
 
@@ -140,8 +143,8 @@ two components:
 We use a EU-hosted variant of [Novu](https://novu.co) to deliver in-app notifications, mobile push notifications and emails to our users.
 
 To forward the required data, our social core (Okuna) subscribes user emails and push tokens to novu as a side effect of handling users and their social interactions.
-The mobile clients [receive push messages](./push-notifications) via platform-specific providers.
-All clients connect to novu cloud [securely](./authentication-authorization/third-party-integrations#securing-the-notification-content) to fetch and acknowledge In-App notifications and allow users to manage their notification preferences.
+The mobile clients [receive push messages](../push-notifications) via platform-specific providers.
+All clients connect to novu cloud [securely](../authentication-authorization/third-party-integrations#securing-the-notification-content) to fetch and acknowledge In-App notifications and allow users to manage their notification preferences.
 
 ## Translation / LibreTranslate
 holi integrates [LibreTranslate](https://github.com/LibreTranslate/LibreTranslate), an open-source machine translation API, to handle translation tasks within the app. 
