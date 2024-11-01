@@ -29,3 +29,4 @@ docs/graphql/objects/
 docs/graphql/queries/
 docs/graphql/scalars/
 docs/graphql/sidebar-schema.js
+.yarn/
