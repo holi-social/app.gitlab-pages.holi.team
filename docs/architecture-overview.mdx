@@ -109,6 +109,14 @@ HOLIs chosen integration technology is a pub/sub network. Currently this is
 [Google Cloud Pub/Sub](https://cloud.google.com/pubsub/). Events are defined in
 [Integration Events](./integration-events). All services may publish and/or consume events.
 
+## Data Pipelines / Recommendation Service
+
+holi uses Machine Learning technologies to calculate recommendations and other types of personalization
+for its users. For this several data pipelines have, in principal, access to data within various Postgres
+databases, receive domain events from the internal Pub/Sub and can run arbitrary computations using Google
+Cloud services like Google Cloud Run jobs. The resulting recommendations are then stored in a Postgres DB
+to be served to end users by the Recommendation Service.
+
 ## Postgres / PostGIS
 
 Any service may use Postgres / PostGIS databases for data persistence. Currently, all services share one
