@@ -3,7 +3,7 @@ variables:
   YARN_ENABLE_GLOBAL_CACHE: "false"
 
 default:
-  image: 'europe-north1-docker.pkg.dev/holi-shared/docker-hub-remote/node:22-slim'
+  image: 'europe-north1-docker.pkg.dev/holi-shared/docker-hub-remote/node:23-slim'
   tags:
     - 1cpu-4gb
   before_script:
