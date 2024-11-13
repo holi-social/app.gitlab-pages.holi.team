@@ -11,7 +11,6 @@ default:
     # env -0 | sort -z | tr '\0' '\n': Sort env output alphabetically, keeping multiline variables intact
     # egrep: Remove sensitive information from the output of env
     - env -0 | sort -z | tr '\0' '\n' | egrep -ve '^(DOCKER_AUTH_CONFIG|GOOGLE_APPLICATION_CREDENTIALS)=.*'
-    - corepack enable
 
 .yarn-cache-rw:
   key:
@@ -37,20 +36,25 @@ install_deps:
   stage: prepare
   cache: !reference [.yarn-cache-rw]
   script:
+    - corepack enable
     - yarn install --immutable
   rules:
     - if: $CI_COMMIT_BRANCH
       changes: 
       - yarn.lock
+      - .gitlab-ci.yml
 
 .build:
   stage: build
   needs: 
     - job: install_deps
       optional: true
-  cache: !reference [.yarn-cache-readonly]
+  cache: !reference [.yarn-cache-rw]
   script:
-    - yarn install --immutable --immutable-cache
+    - corepack enable
+    # If CI Cache is empty because install_deps did not run, install filling the cache, otherwise install from the immutable cache
+    # install_deps does not run on long living branches, and it might not run on pipeline failures on the first build of a branch
+    - '[ ! -d ".yarn/cache" ] && yarn install --immutable || yarn install --immutable --immutable-cache'
     - yarn graphql-to-doc
     - yarn build
 
