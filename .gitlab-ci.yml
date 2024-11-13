@@ -52,7 +52,6 @@ install_deps:
   cache: !reference [.yarn-cache-rw]
   script:
     - corepack enable
-    - corepack enable
     # If CI Cache is empty because install_deps did not run, install filling the cache, otherwise install from the immutable cache
     # install_deps does not run on long living branches, and it might not run on pipeline failures on the first build of a branch
     - '[ ! -d ".yarn/cache" ] && yarn install --immutable || yarn install --immutable --immutable-cache'
