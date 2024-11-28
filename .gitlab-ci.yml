@@ -1,6 +1,6 @@
 variables:
-  YARN_CACHE_FOLDER: "$CI_PROJECT_DIR/.yarn/cache"
-  YARN_ENABLE_GLOBAL_CACHE: "false"
+  YARN_CACHE_FOLDER: '$CI_PROJECT_DIR/.yarn/cache'
+  YARN_ENABLE_GLOBAL_CACHE: 'false'
 
 default:
   image: 'europe-north1-docker.pkg.dev/holi-shared/docker-hub-remote/node:22-slim'
@@ -40,13 +40,13 @@ install_deps:
     - yarn install --immutable
   rules:
     - if: $CI_COMMIT_BRANCH
-      changes: 
-      - yarn.lock
-      - .gitlab-ci.yml
+      changes:
+        - yarn.lock
+        - .gitlab-ci.yml
 
 .build:
   stage: build
-  needs: 
+  needs:
     - job: install_deps
       optional: true
   cache: !reference [.yarn-cache-rw]
@@ -69,7 +69,6 @@ pages:
     - mv build/ public/
   artifacts:
     paths:
-    - public
+      - public
   rules:
     - if: $CI_COMMIT_BRANCH == 'main'
-
