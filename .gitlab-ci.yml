@@ -1,5 +1,4 @@
 variables:
-  YARN_CACHE_FOLDER: '$CI_PROJECT_DIR/.yarn/cache'
   YARN_ENABLE_GLOBAL_CACHE: 'false'
 
 default:
@@ -35,6 +34,9 @@ stages:
 install_deps:
   stage: prepare
   cache: !reference [.yarn-cache-rw]
+  variables:
+    # it causes problems when this variable is defined globally and the job is triggered from unified-api
+    YARN_CACHE_FOLDER: '$CI_PROJECT_DIR/.yarn/cache'
   script:
     - corepack enable
     - yarn install --immutable
@@ -50,6 +52,9 @@ install_deps:
     - job: install_deps
       optional: true
   cache: !reference [.yarn-cache-rw]
+  variables:
+    # it causes problems when this variable is defined globally and the job is triggered from unified-api
+    YARN_CACHE_FOLDER: '$CI_PROJECT_DIR/.yarn/cache'
   script:
     - corepack enable
     # If CI Cache is empty because install_deps did not run, install filling the cache, otherwise install from the immutable cache
