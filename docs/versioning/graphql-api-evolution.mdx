@@ -2,7 +2,7 @@
 
 Since we are dealing with mobile clients, we always need to ensure, that older app versions are
 still supported by our backend. Details on app version management and current policies regarding
-supported versions can be found in [Versioning (App & API)](./index).
+supported versions can be found in [Versioning (App & API)](./).
 
 Following [GraphQL best practices](https://graphql.org/learn/best-practices/#versioning) we evolve
 our schema on a field basis as opposed to versioning our API as a whole.
@@ -30,7 +30,7 @@ e.g. the following aspects on how to avoid breaking changes:
 2. Deprecate the operation and/or related types in question in our GraphQL schema using the
    `@deprecated` Directive inside the `reason` argument.
    * Specify the current APP Version, the deprecation happened at
-   * Provide a pointer to other devs on what implementation to migrate to (method name, usage etc)
+   * Provide a pointer to other devs on what implementation to migrate to (method name, usage etc.)
 3. Announce the deprecation in #Dev-Team
 4. If applicable, create a follow-up ticket to later on remove the newly introduced operation/types
    and migrate them back to the original identifier at a later point in time (once no old app

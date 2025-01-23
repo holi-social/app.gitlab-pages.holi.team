@@ -16,7 +16,7 @@ To edit this diagram, import the source file in [draw.io](https://draw.io), edit
 
 - **Mobile:** the mobile application is based on React Native and contains HOLI clients for both
   Android and iOS.
-- **Web (SPA) & Web (SSR):** the web version of HOLI is based on Next.JS / React
+- **Web (SPA) & Web (SSR):** the web version of HOLI is based on Next.js / React
 - Both mobile and web use a high degree of code sharing by leveraging
   [react-native-web](https://github.com/necolas/react-native-web) which allows React components to be
   written using the React Native way (i.e. using its library) but also to be
@@ -99,20 +99,20 @@ services or even frontend applications.
 
 - [holi-geo-api](https://gitlab.holi.team/app/holi-geo-api) provides geo-coordinate resolution and places
   auto-completion
-- shared-image-proxy is an proxy server that allows to transform images from 3rd party sites on-the-fly
+- shared-image-proxy is a proxy server that allows to transform images from 3rd party sites on-the-fly
   (e.g. to use sensible image resolutions within the holi mobile/browser app). Currently, it is barely a
   deployment of [imgproxy](https://imgproxy.net).
 
 ## Pub/Sub
 
-HOLIs chosen integration technology is a pub/sub network. Currently this is
+HOLIs chosen integration technology is a Pub/Sub network. Currently, this is
 [Google Cloud Pub/Sub](https://cloud.google.com/pubsub/). Events are defined in
 [Integration Events](../integration-events). All services may publish and/or consume events.
 
 ## Data Pipelines / Recommendation Service
 
 holi uses Machine Learning technologies to calculate recommendations and other types of personalization
-for its users. For this several data pipelines have, in principal, access to data within various Postgres
+for its users. For this several data pipelines optionally have access to data within various Postgres
 databases, receive domain events from the internal Pub/Sub and can run arbitrary computations using Google
 Cloud services like Google Cloud Run jobs. The resulting recommendations are then stored in a Postgres DB
 to be served to end users by the Recommendation Service.
@@ -140,7 +140,7 @@ two components:
 
 ## Novu Notifications
 
-We use a EU-hosted variant of [Novu](https://novu.co) to deliver in-app notifications, mobile push notifications and emails to our users.
+We use an EU-hosted variant of [Novu](https://novu.co) to deliver in-app notifications, mobile push notifications and emails to our users.
 
 To forward the required data, our social core (Okuna) subscribes user emails and push tokens to novu as a side effect of handling users and their social interactions.
 The mobile clients [receive push messages](../push-notifications) via platform-specific providers.
