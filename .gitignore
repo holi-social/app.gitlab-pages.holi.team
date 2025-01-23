@@ -18,16 +18,8 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-.yarn
+.yarn/
 
 # Generated GraphQL API documentation sources
-docs/graphql/deprecated/
-docs/graphql/directives/
-docs/graphql/enums/
-docs/graphql/inputs/
-docs/graphql/mutations/
-docs/graphql/objects/
-docs/graphql/queries/
-docs/graphql/scalars/
-docs/graphql/sidebar-schema.js
-.yarn/
+docs/graphql/operations/
+docs/graphql/types/

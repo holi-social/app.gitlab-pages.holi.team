@@ -1,6 +1,7 @@
 schema: "https://production.unified.apis.holi.social/graphql"
 extensions:
   graphql-markdown:
+    rootPath: "./docs"
     linkRoot: "/docs"
     baseURL: "graphql"
     homepage: "docs/graphql/index.mdx"
@@ -10,7 +11,7 @@ extensions:
         options:
           method: "POST"
     printTypeOptions:
-      deprecated: "group"
+      deprecated: "default"
     docOptions:
       pagination: false,
       toc: false
