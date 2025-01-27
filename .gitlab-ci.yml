@@ -40,6 +40,7 @@ install_deps:
   script:
     - corepack enable
     - yarn config get cacheFolder
+    - env
     - yarn install --immutable
   rules:
     - if: $CI_COMMIT_BRANCH
@@ -59,6 +60,7 @@ install_deps:
   script:
     - corepack enable
     - yarn config get cacheFolder
+    - env
     # If CI Cache is empty because install_deps did not run, install filling the cache, otherwise install from the immutable cache
     # install_deps does not run on long living branches, and it might not run on pipeline failures on the first build of a branch
     - '[ ! -d ".yarn/cache" ] && yarn install --immutable || yarn install --immutable --immutable-cache'
