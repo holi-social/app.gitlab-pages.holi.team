@@ -37,10 +37,13 @@ install_deps:
   variables:
     # it causes problems when this variable is defined globally and the job is triggered from unified-api
     YARN_CACHE_FOLDER: '$CI_PROJECT_DIR/.yarn/cache'
+    FOOBAR: "aa$CI_PROJECT_DIRbb"
   script:
+    - env -0 | sort -z | tr '\0' '\n' | egrep -ve '^(DOCKER_AUTH_CONFIG|GOOGLE_APPLICATION_CREDENTIALS)=.*'
     - corepack enable
+    - export YARN_CACHE_FOLDER="${CI_PROJECT_DIR}/.yarn/cache"
     - yarn config get cacheFolder
-    - env
+    - env -0 | sort -z | tr '\0' '\n' | egrep -ve '^(DOCKER_AUTH_CONFIG|GOOGLE_APPLICATION_CREDENTIALS)=.*'
     - yarn install --immutable
   rules:
     - if: $CI_COMMIT_BRANCH
@@ -57,10 +60,13 @@ install_deps:
   variables:
     # it causes problems when this variable is defined globally and the job is triggered from unified-api
     YARN_CACHE_FOLDER: '$CI_PROJECT_DIR/.yarn/cache'
+    FOOBAR: "aa$CI_PROJECT_DIRbb"
   script:
+    - env -0 | sort -z | tr '\0' '\n' | egrep -ve '^(DOCKER_AUTH_CONFIG|GOOGLE_APPLICATION_CREDENTIALS)=.*'
     - corepack enable
+    - export YARN_CACHE_FOLDER="${CI_PROJECT_DIR}/.yarn/cache"
     - yarn config get cacheFolder
-    - env
+    - env -0 | sort -z | tr '\0' '\n' | egrep -ve '^(DOCKER_AUTH_CONFIG|GOOGLE_APPLICATION_CREDENTIALS)=.*'
     # If CI Cache is empty because install_deps did not run, install filling the cache, otherwise install from the immutable cache
     # install_deps does not run on long living branches, and it might not run on pipeline failures on the first build of a branch
     - '[ ! -d ".yarn/cache" ] && yarn install --immutable || yarn install --immutable --immutable-cache'
