@@ -36,8 +36,8 @@ install_deps:
   cache: !reference [.yarn-cache-rw]
   variables:
     # it causes problems when this variable is defined globally and the job is triggered from unified-api
-    YARN_CACHE_FOLDER: '$CI_PROJECT_DIR/.yarn/cache'
-    FOOBAR: "aa$CI_PROJECT_DIRbb"
+    YARN_CACHE_FOLDER: '${CI_PROJECT_DIR}/.yarn/cache'
+    FOOBAR: "aa${CI_PROJECT_DIR}bb"
   script:
     - env -0 | sort -z | tr '\0' '\n' | egrep -ve '^(DOCKER_AUTH_CONFIG|GOOGLE_APPLICATION_CREDENTIALS)=.*'
     - corepack enable
@@ -59,8 +59,8 @@ install_deps:
   cache: !reference [.yarn-cache-rw]
   variables:
     # it causes problems when this variable is defined globally and the job is triggered from unified-api
-    YARN_CACHE_FOLDER: '$CI_PROJECT_DIR/.yarn/cache'
-    FOOBAR: "aa$CI_PROJECT_DIRbb"
+    YARN_CACHE_FOLDER: '${CI_PROJECT_DIR}/.yarn/cache'
+    FOOBAR: "aa${CI_PROJECT_DIR}bb"
   script:
     - env -0 | sort -z | tr '\0' '\n' | egrep -ve '^(DOCKER_AUTH_CONFIG|GOOGLE_APPLICATION_CREDENTIALS)=.*'
     - corepack enable
