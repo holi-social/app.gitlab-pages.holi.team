@@ -82,8 +82,17 @@ In general, implementing the function `getServerSideProps` activates SSR for a p
 - `queries`: Queries to be executed in advance to simplify or speed up the page rendering process (e.g. when queries are executed sequentially one after another) or handle 404/403 errors
 
     A query to fetch the currently user if logged in is always executed and does not have to be added manually.
-- `customProps`: Custom SEO props like (invisible) `h1` header or localized path names (see [SEO H1 Heading](./seo-sitemap#h1-heading))
-
+- `customProps`: Optional properties to override SEO and other behaviour:
+    - `seoTitle`: I18n key to override the (invisible) `h1` header for SEO (see [SEO H1 Heading](./seo-sitemap#h1-heading))
+    - `urls`:
+      - Localized path names, e.g. `{ en: '/example', de: '/beispiel' }`
+      - Paths should be aligned with `rewrites` in the `next.config.js` and included in the `linkingConfig.ts` as well as navigators for mobile.
+    - `blockIndexing`: Set to true to prevent crawlers to index a screen (will add `noindex` meta tag for robots). Currently used for user profiles.
+    - `uuidParams`: List of path parameters that are expected to be valid UUIDs. Will try to correct invalid UUIDs (e.g. by removing invalid suffixes) and redirect to the corrected URL.
+    - Redirects based on the user login state:
+      - `redirectRouteForLoggedInUsers`: Redirect to a different route if the current user is logged in. Useful if logged in users are not expected to see a certain screen, e.g. login or password recovery. There is a helper `createServerSidePropsWithLoggedInUserGuard` using this prop to provide redirects to the home screen.
+      - `redirectRouteForLoggedOutUsers`: Redirect to a different route if the current user is not logged in. Might be useful for routes where a login is required.
+      - `redirectRouteForNewUsers`: Redirect to a different screen if the current user is not logged in and not recognized as a recurring guest (i.e. users that cancelled the onboarding with "continue as guest" - recognizable by a cookie `guest_mode`) or bot (by checking the user agent for common names of search engine crawlers or link preview bots). Currently used to redirect to the onboarding screen if first time users visit the home screen.
 
 On pages with query parameters the usage of `useQuery(<param>)` can be reproduced by accessing `context.query.<param>` where `context` is the request context provided by Next.js.
 
