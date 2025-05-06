@@ -133,18 +133,6 @@ Any service may use Postgres / PostGIS databases for data persistence. Currently
 [Google Cloud SQL](https://cloud.google.com/sql/docs) Postgres instance, but databases are to be separated
 per service.
 
-## OwnCloud / OwnCloud Integration
-
-holi includes a hosted version of OwnCloud as part of the Spaces feature. The runtime is separated into
-two components:
-
-- [holi-ocis](https://gitlab.holi.team/app/holi-ocis) (OwnCloud): the original OwnCloud binary, serving
-  the original OwnCloud frontend, accessible via Spaces using the users Browser / Mobile Apps.
-- [holi-ocis-integration](https://gitlab.holi.team/app/holi-ocis-integration) (OwnCloud Integration):
-  integration code that ensures that users, their names and attributes and their rights and roles are in
-  sync between holi (Okuna / Ory) and OwnCloud.
-
-
 ## Novu Notifications
 
 We use an EU-hosted variant of [Novu](https://novu.co) to deliver in-app notifications, mobile push notifications and emails to our users.
