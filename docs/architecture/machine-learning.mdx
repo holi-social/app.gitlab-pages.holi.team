@@ -20,7 +20,7 @@ In order to serve recommendations for volunteering opportunities, the following 
 
 1. The Voltastics Crawler runs as part of a nightly Google Cloud Run job. It crawls all of betterplace.org and stores
    the results within BigQuery.
-2. The data pipeline (source see [holi-data-classification](http://gitlab.holi.team/app/holi-data-classification/))
+2. The data pipeline
    then determines which of the crawled volunteering opportunities were new, updated or deleted.
 3. For new and updated items, it runs a classification using Google Cloud AI services. The results are
    * a vector of similarities to all interests and skills a holi user can select for themselves in their profile
