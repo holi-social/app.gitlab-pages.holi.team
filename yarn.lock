@@ -2967,9 +2967,9 @@ __metadata:
   linkType: hard
 
 "@graphql-markdown/types@npm:^1.4.2":
-  version: 1.7.0
-  resolution: "@graphql-markdown/types@npm:1.7.0"
-  checksum: 10c0/131e2943a64a941dfaea26a70ed9fcca3bb4d9f6986ef963d9e4ea65c47d588755d2b33a46e8176f7339a091fbd3af228d4432c94796a9c520bfafaab35d0a8f
+  version: 1.8.0
+  resolution: "@graphql-markdown/types@npm:1.8.0"
+  checksum: 10c0/66a0f8453a095be7177344a6a2cac3f32f3042c781dc2a366331f624aae346ffdd69ce350438c8d1026eb7d38b02097b52e33fb774cba4dfc0a4ff3e6e509606
   languageName: node
   linkType: hard
 
