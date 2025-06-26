@@ -2883,24 +2883,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@graphql-markdown/cli@npm:^0.4.0":
-  version: 0.4.0
-  resolution: "@graphql-markdown/cli@npm:0.4.0"
+"@graphql-markdown/cli@npm:^0.4.1":
+  version: 0.4.1
+  resolution: "@graphql-markdown/cli@npm:0.4.1"
   dependencies:
-    "@graphql-markdown/core": "npm:^1.16.0"
+    "@graphql-markdown/core": "npm:^1.16.1"
     "@graphql-markdown/logger": "npm:^1.0.5"
     "@graphql-markdown/printer-legacy": "npm:^1.12.2"
     commander: "npm:^5.1.0"
     graphql-config: "npm:^5.1.3"
   bin:
     gqlmd: dist/main.js
-  checksum: 10c0/dc4d5cb5004297d49911350bec81771e5e40415d6967ed42e75f59cf63528b59d84d24c2a6a0b3a9575cceda900c1b00bdfc819454ef4cdd8781afbc00bba1ff
+  checksum: 10c0/4364774741becc4db12dcd3e69473a8b5fda977b2f7706890ca03e4bcbd94b556b74da2e983edc60f2ce3f2303aeb9aac5ab3b199d0fde23577fd780d5250d44
   languageName: node
   linkType: hard
 
-"@graphql-markdown/core@npm:^1.16.0":
-  version: 1.16.0
-  resolution: "@graphql-markdown/core@npm:1.16.0"
+"@graphql-markdown/core@npm:^1.16.1":
+  version: 1.16.1
+  resolution: "@graphql-markdown/core@npm:1.16.1"
   dependencies:
     "@graphql-markdown/graphql": "npm:^1.1.8"
     "@graphql-markdown/logger": "npm:^1.0.5"
@@ -2919,21 +2919,21 @@ __metadata:
       optional: true
     graphql-config:
       optional: true
-  checksum: 10c0/ceceff12818e334dfcaaca375858b6c3477df411fcf3126f8a1c4ddc4ccdb7b6ae8961e02544fbbdd749e980eac5be2ca892726dd91b9536b8203c1a30e64b3c
+  checksum: 10c0/3e85562c70abaeed64331a5b81179753491c3f106da3ffc637a44d012039fef2128635d64ce889f064997fb955a4be35389844eac81bfdb9c6679a1596f63838
   languageName: node
   linkType: hard
 
 "@graphql-markdown/docusaurus@npm:^1.26.4":
-  version: 1.30.0
-  resolution: "@graphql-markdown/docusaurus@npm:1.30.0"
+  version: 1.30.1
+  resolution: "@graphql-markdown/docusaurus@npm:1.30.1"
   dependencies:
     "@docusaurus/utils": "npm:>=3.2.0"
-    "@graphql-markdown/cli": "npm:^0.4.0"
+    "@graphql-markdown/cli": "npm:^0.4.1"
     "@graphql-markdown/logger": "npm:^1.0.5"
     "@graphql-markdown/utils": "npm:^1.9.0"
   peerDependencies:
     "@docusaurus/logger": "*"
-  checksum: 10c0/98edafbf95882880a04e99af21aa1762879ee9d3c9c0e80f20000da07fe67e5e1ce7208091f38b2840a7b3ae5e3ba3e3a56f4e572c859bb4a06e5ee923b3d9fc
+  checksum: 10c0/6a55e5a6f24d2bca3659b841c332f581e139df622dc7f168b9368fb5511a1ee7f7d6bdef27ac9d041dda46a7c0bc1379c2e6a2d267101fbe3af6de6752d40cdd
   languageName: node
   linkType: hard
 
