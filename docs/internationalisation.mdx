@@ -3,6 +3,8 @@
 This document provides an overview about how we handle translations. 
 See [holi-frontends/README](https://gitlab.holi.team/app/holi-frontends/#i18n-internationalization) for example usage.
 
+Note that localizaton is managed in [Localazy](https://localazy.com/) which serves as source of truth for copies and translations.
+
 ## Language support and detection
 
 - Currently we support two languages: English and German
@@ -19,11 +21,12 @@ See [holi-frontends/README](https://gitlab.holi.team/app/holi-frontends/#i18n-in
 
 ## Technical documentation
 
-- We use [i18next](https://www.i18next.com/) as base framework as it provides a lot of options for configuration and plugins to comply to our current and possible future needs
-  - Currently all translations are part of the frontend code, i.e. we do not use an external tool for editing translation yet
-    - In order to allow for flexibility in tool selection, we use a commonly used format for our translations: [JSON Format v3](https://www.i18next.com/misc/json-format#i18next-json-v3) in a flat structure (i.e. no nested keys)
-    - The format allows for pluralization and variable interpolation
-  - Currently all translations are part of the web and app bundles
+- We use [i18next](https://www.i18next.com/) as base framework and configured it to optimize integration with Localazy. This means:
+  - Localazy is the source of truth for translations. The frontend code only holds a snapshot of these, which gets updated nightly on the main branch.
+  - The translation snapshots are part of the web and app bundles
+  - Translations can be updated manually using `yarn i18n:download`
+  - If it should be necessary to upload translations from the frontend code, the script `yarn i18n:upload` can be used
+  - We use [JSON Format v4](https://www.i18next.com/misc/json-format#i18next-json-v4) for the translation files with support for pluralization and variable interpolation. Currently we did not enable support for nested keys or arrays.
 - [react-i18next](https://react.i18next.com/) for React/React Native integration
   - Provides access to translations in components with the [useTranslation hook](https://react.i18next.com/latest/usetranslation-hook)
   - Provides a [Trans](https://react.i18next.com/latest/trans-component) component for nesting components inside translations (e.g. links inside a sentence)
@@ -32,6 +35,5 @@ See [holi-frontends/README](https://gitlab.holi.team/app/holi-frontends/#i18n-in
   - If the URL does not contain a locale sub-path, a redirect with adding the proper sub-path with the detected locale (`accept-language` header of the request) is performed (e.g. https://app.holi.social/spaces → https://app.holi.social/de/spaces).
   - When deep linking on mobile, the locale sub-paths are ignored and the device language is used instead.
   - Locale specific path names are supported (e.g. https://app.holi.social/de/spenden will be internally redirected to https://app.holi.social/de/donations without changing the URL), but only used for SEO (i.e. such path names will be exposed to search engines, but not be used for navigation inside the app)
-- We use [namespaces](https://www.i18next.com/principles/namespaces) to separate translations from the core application and different holi-apps
 - We use [Intl](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl) to provide locale data, e.g. for number or date formatting
   - On mobile this is polyfilled using [intl](https://www.npmjs.com/package/intl)
