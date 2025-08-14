@@ -11,7 +11,7 @@ them.
 
 TL;DR: Check out this repository to get going quickly.
 
-[holi-meta](https://gitlab.holi.team/app/holi-meta)
+* [holi-meta](https://gitlab.holi.team/app/holi-meta)
 
 holi-meta is your helper for quickly setting up a full development environment. It contains scripts for setting up a
 full workspace, checking out all necessary repositories. It also contains helpers for running local environments from
@@ -22,7 +22,7 @@ and running code, no matter which area you want to focus on.
 
 ## Frontends
 
-[holi-frontends](https://gitlab.holi.team/app/holi-frontends)
+* [holi-frontends](https://gitlab.holi.team/app/holi-frontends)
 
 holi-frontends contains all code for the [Web App](https://app.holi.social) as well as for the 
 [iOS](https://apps.apple.com/pt/app/holi-social-eco-impact/id6446693757) and 
@@ -33,7 +33,7 @@ The [README](https://gitlab.holi.team/app/holi-frontends) contains further docum
 
 ## Unified API
 
-[holi-unified-api](https://gitlab.holi.team/app/holi-unified-api)
+* [holi-unified-api](https://gitlab.holi.team/app/holi-unified-api)
 
 The holi-unified-api is the component providing the frontend with a single API, merging different backend APIs into one
 and taking care of authentication and authorization.
@@ -42,7 +42,7 @@ The [README](https://gitlab.holi.team/app/holi-unified-api) contains further doc
 
 ## Social
 
-[holi-okuna](https://gitlab.holi.team/app/holi-okuna)
+* [holi-okuna](https://gitlab.holi.team/app/holi-okuna)
 
 holi-okuna is the backend that takes care of the social components of holi. In here, there's user profiles &
 preferences, posts, insights and a lot more. This project was forked by us. Originally, it had been developed as a
@@ -62,27 +62,56 @@ now.
 
 ## Chat
 
-[holi-chat-server](https://gitlab.holi.team/app/holi-chat-server)
+holi contains a chat based on [synapse](https://github.com/matrix-org/synapse) by the Matrix.org Foundation.
 
-holi contains a chat based on [synapse](https://github.com/matrix-org/synapse) by the Matrix.org Foundation. This
-repository contains the deployment configuration for this service.
+* [holi-chat-server](https://gitlab.holi.team/app/holi-chat-server) - contains the deployment configuration for the Synapse service
+* [holi-chat-integration](https://gitlab.holi.team/app/holi-chat-integration) - contains a cloud function consuming domain events (see [integration-events](./integration-events)) to ensure e.g. users with holi accounts also have a chat account and that their profile names are reflected in the chat
+
 
 ## Geo-API
 
-[holi-geo-api](https://gitlab.holi.team/app/holi-geo-api)
+* [holi-geo-api](https://gitlab.holi.team/app/holi-geo-api)
 
 Some searches on holi can be filtered by geolocation (e.g. initiatives, users, ...). This repository contains a backend
 service for accessing geolocation data.
 
-## Videoconferences
+## Video Calls
 
-[holi-meet](https://gitlab.holi.team/app/holi-meet)
+* [holi-meet](https://gitlab.holi.team/app/holi-meet)
 
-For initiatives, holi also provides Video Chat. It is based on Jitsi Meet. This repository contains the deployment
+For initiatives, holi also provides video calls, based on Jitsi Meet. This repository contains the deployment
 configuration for this service.
 
 ## Translation
-[holi-translation-api](https://gitlab.holi.team/app/holi-translation-api)
-[holi-libretranslate](https://gitlab.holi.team/app/holi-libretranslate)
+* [holi-translation-api](https://gitlab.holi.team/app/holi-translation-api)
+* [holi-libretranslate](https://gitlab.holi.team/app/holi-libretranslate)
 
 holi offers a translation service to ensure that content is accessible in multiple languages to promote inclusivity and broadening the reach of the platform.
+
+## Data Pipelines
+
+* [holi-data-pipelines](https://gitlab.holi.team/app/holi-data-pipelines)
+
+The data pipelines repo contains all data crawling, enrichment and other AI processing holi does.
+
+## Load Testing
+
+* [holi-load-testing](https://gitlab.holi.team/app/holi-load-testing)
+
+Automated tests to put holi under load.
+
+## Moderation
+
+* [holi-moderation](https://gitlab.holi.team/app/holi-moderation)
+
+The backoffice frontend for content moderation workflows.
+
+## Notifications
+
+* [holi-notifications](https://gitlab.holi.team/app/holi-notifications)
+
+Provides a service for sending mail and push notifications to users of the app.
+
+## Rewards
+
+* [holi-rewards](https://gitlab.holi.team/app/holi-rewards)
