@@ -2883,25 +2883,33 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@graphql-markdown/cli@npm:^0.4.2":
-  version: 0.4.2
-  resolution: "@graphql-markdown/cli@npm:0.4.2"
+"@fastify/deepmerge@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "@fastify/deepmerge@npm:3.1.0"
+  checksum: 10c0/57eda9079e9ed6d137f966e8b0d08f219cbca6e79706a1be76fe10ba2b8fd87c33846f1c653299b09a2e8260ffba8c8fc708f9b40b54243648d6821061999c9b
+  languageName: node
+  linkType: hard
+
+"@graphql-markdown/cli@npm:^0.4.3":
+  version: 0.4.3
+  resolution: "@graphql-markdown/cli@npm:0.4.3"
   dependencies:
-    "@graphql-markdown/core": "npm:^1.16.2"
+    "@graphql-markdown/core": "npm:^1.16.3"
     "@graphql-markdown/logger": "npm:^1.0.5"
     "@graphql-markdown/printer-legacy": "npm:^1.12.3"
     commander: "npm:^5.1.0"
     graphql-config: "npm:^5.1.3"
   bin:
     gqlmd: dist/main.js
-  checksum: 10c0/85395992b8aef282f9dbb85df92e6c078788a446aaa38766cf1fe81412dcd400ccfc75d25c26a182b7db775b062b85a1e1e8ef6b1f6e586bef6f2b086ca6aa8a
+  checksum: 10c0/c2ddb2686c4b1ee49ed14116e6d82f473eb8591a51d57844078eaaf6dd0d58c695d7cdb523d2b05f20b9aaeb6cfdf98f71084fc165bb2d9c6547a833d1499107
   languageName: node
   linkType: hard
 
-"@graphql-markdown/core@npm:^1.16.2":
-  version: 1.16.2
-  resolution: "@graphql-markdown/core@npm:1.16.2"
+"@graphql-markdown/core@npm:^1.16.3":
+  version: 1.16.3
+  resolution: "@graphql-markdown/core@npm:1.16.3"
   dependencies:
+    "@fastify/deepmerge": "npm:^3.1.0"
     "@graphql-markdown/graphql": "npm:^1.1.9"
     "@graphql-markdown/logger": "npm:^1.0.5"
     "@graphql-markdown/utils": "npm:^1.9.0"
@@ -2919,21 +2927,21 @@ __metadata:
       optional: true
     graphql-config:
       optional: true
-  checksum: 10c0/2ac5dbcc7097be928d6dbdd7e29eeb663de32d550bfc8f4e355a188867aba12107ac352fc5bd1b4ec2fa922e15735c46bb95c142cace0cbb8c1910bc430a6cf7
+  checksum: 10c0/933f08c6af8f384cb399dfbe275d2aeed833390b560ef1486442a7bc06373735cfeaa8f0aa951b9bdf4112494837681968c362effb980f6ffcd716e0eacd967d
   languageName: node
   linkType: hard
 
 "@graphql-markdown/docusaurus@npm:^1.26.4":
-  version: 1.30.2
-  resolution: "@graphql-markdown/docusaurus@npm:1.30.2"
+  version: 1.30.3
+  resolution: "@graphql-markdown/docusaurus@npm:1.30.3"
   dependencies:
     "@docusaurus/utils": "npm:>=3.2.0"
-    "@graphql-markdown/cli": "npm:^0.4.2"
+    "@graphql-markdown/cli": "npm:^0.4.3"
     "@graphql-markdown/logger": "npm:^1.0.5"
     "@graphql-markdown/utils": "npm:^1.9.0"
   peerDependencies:
     "@docusaurus/logger": "*"
-  checksum: 10c0/37e6ff7a083604c3f11ab66ac1e3a4aec0a2f9a87711c1813d0fee1d01829ca708572dd626b119c23dcc9b81e96289f77bf392017728d6f6db0db7e757ea1853
+  checksum: 10c0/9d94b6635acf4e94fe4f8103a57f044eb1ab7877d6bd8db0ed7c4960ae0c3e8d7b3b5d0ec1cd151349458a4e885494d6d3343e57eb15077619a2c55277cb918b
   languageName: node
   linkType: hard
 
