@@ -5,23 +5,24 @@ to communicate asynchronously and reliably between applications.
 
 ## Event Types
 
-Currently, the following events are emitted by [holi-okuna](https://gitlab.holi.team/app/holi-okuna):
-
-| Event Name         | Description                                                           |
-| ------------------ | --------------------------------------------------------------------- |
-| `UserNameUpdated`  | Emitted when a user updates their username.                           |
-| `UserEmailUpdated` | Emitted when a user updates their email address.                      |
-| `UserDeleted`      | Emitted when a user deletes their account.                            |
-| `SpaceCreated`     | Emitted when a user creates a space.                                  |
-| `SpaceUpdated`     | Emitted when a user updates a spaces attributes (e.g. `name`/`slug`)  |
-| `SpaceUserAdded`   | Emitted when a user joins a space.                                    |
-| `SpaceUserLeft`    | Emitted when a user leaves a space.                                   |
-| `SpaceUserRemoved` | Emitted when a user is removed from a space by a space administrator. |
-| `SpaceDeleted`     | Emitted when a space is deleted.                                      |
-| `TaskCreated`      | Emitted when a space task is created.                                 |
-| `TaskUpdated`      | Emitted when a space task is updated.                                 |
-| `TaskDeleted`      | Emitted when a space task is deleted.                                 |
-
+| Emitter           | Topic                   | Event Name            | Description                                                                    |
+| ----------------- | ----------------------- | --------------------- | ------------------------------------------------------------------------------ |
+| okuna             | `okuna_$ENV`            | `UserNameUpdated`     | Emitted when a user updates their username.                                    |
+| okuna             | `okuna_$ENV`            | `UserEmailUpdated`    | Emitted when a user updates their email address.                               |
+| okuna             | `okuna_$ENV`            | `UserDeleted`         | Emitted when a user deletes their account.                                     |
+| okuna             | `okuna_$ENV`            | `SpaceCreated`        | Emitted when a user creates a space.                                           |
+| okuna             | `okuna_$ENV`            | `SpaceUpdated`        | Emitted when a user updates a spaces attributes (e.g. `name`/`slug`)           |
+| okuna             | `okuna_$ENV`            | `SpaceUserAdded`      | Emitted when a user joins a space.                                             |
+| okuna             | `okuna_$ENV`            | `SpaceUserLeft`       | Emitted when a user leaves a space.                                            |
+| okuna             | `okuna_$ENV`            | `SpaceUserRemoved`    | Emitted when a user is removed from a space by a space administrator.          |
+| okuna             | `okuna_$ENV`            | `SpaceDeleted`        | Emitted when a space is deleted.                                               |
+| okuna             | `okuna_$ENV`            | `TaskCreated`         | Emitted when a space task is created.                                          |
+| okuna             | `okuna_$ENV`            | `TaskUpdated`         | Emitted when a space task is updated.                                          |
+| okuna             | `okuna_$ENV`            | `TaskDeleted`         | Emitted when a space task is deleted.                                          |
+| donations crawler | `donations_$ENV`        | `DonationCreated`     | Emitted when the donation crawler finds a new donation project.                |
+| donations crawler | `donations_$ENV`        | `DonationUpdated`     | Emitted when a previously known donation project was updated.                  |
+| donations crawler | `donations_$ENV`        | `DonationDeleted`     | Emitted when the donation crawler detects that a donation project was deleted. |
+| volunteering crawler | `external-data-$ENV` | `VolunteeringDeleted` | Emitted when the donation crawler detects that a donation project was deleted. |
 
 ## Event Payloads
 
@@ -46,10 +47,10 @@ For every event emitted by a holi emitter two key/value pairs are to be added to
 - `eventVersion`: version of the event (uses semantic versioning)
 
 At this point of time, there's no dedicated documentation for the `data` field of the event (which varies depending on `eventType`).
-Please refer to
+Please refer to the publisher source code in
 
-- the publishers source code in [holi-okuna](https://gitlab.holi.team/app/holi-okuna/-/blob/main/openbook/helpers.py), and
-- the consumers source code e.g. in [holi-chat-integration](https://gitlab.holi.team/app/holi-chat-integration)
+* [holi-okuna](https://gitlab.holi.team/app/holi-okuna/-/blob/main/openbook/helpers.py) and
+* [holi-data-pipelines](https://gitlab.holi.team/app/holi-data-pipelines)
 
 to learn more about the payloads.
 
