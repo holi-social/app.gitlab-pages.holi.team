@@ -69,8 +69,7 @@ However, it would require further investigation to find out if this model is com
 :::
 
 :::info
-Holis SSR implementation does not strictly follow the [recommended approach by Apollo](https://www.apollographql.com/docs/react/performance/server-side-rendering/#executing-queries-with-getdatafromtree). Apollo suggests to use `getDataFromTree` to collect all queries for the page to render. However during implementation it became apparent this does not readily support sequential queries (i.e. cases were one query depends on the results of another) and error cases like 404 were not handled properly.
-Instead an [official example for Pages Router using Apollo by Next.js](https://github.com/vercel/next.js/tree/4466ba436b996263307171d344cca199e8087744/examples/with-apollo) was combined with direct application of the mechanisms used inside Apollos `getDataFromTree` inspired by a [Next.js discussion](https://github.com/vercel/next.js/discussions/15736#discussioncomment-6385504), so that it is not necessary to manually list all required queries.
+Holis SSR implementation does not strictly follow the [approach specified by Apollo](https://www.apollographql.com/docs/react/performance/server-side-rendering). Although we do use the recommended `prerenderStatic` function to collect and execute all necessary queries for the page to render, we precompute and enhance the client response with even more information than just the Apollo cache state. Our approach was inspired by a [Next.js discussion](https://github.com/vercel/next.js/discussions/15736#discussioncomment-6385504) and adapted it for Apollo v4.
 :::
 
 
