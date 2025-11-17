@@ -1,6 +1,6 @@
 # Apollo Client Caching
 
-We use the [Apollo react client @apollo/client](https://www.apollographql.com/docs/react) to query and modify data from our [unified GraphQL API](./graphql) in the frontend and use mostly existing features and default behaviour for caching the data. E.g. we do not override the default option `cache-first` as [fetch policy](https://www.apollographql.com/docs/react/data/queries#setting-a-fetch-policy) for queries in most cases.
+We use the [Apollo react client @apollo/client](https://www.apollographql.com/docs/react) to query and modify data from our [unified GraphQL API](../graphql) in the frontend and use mostly existing features and default behaviour for caching the data. E.g. we do not override the default option `cache-first` as [fetch policy](https://www.apollographql.com/docs/react/data/queries#setting-a-fetch-policy) for queries in most cases.
 Check the [Apollo documentation](https://www.apollographql.com/docs/react/caching/overview/) for an overview of client side caching in Apollo.
 
 However, it was necessary to apply custom logic for the way we handle pagination and cache keys in our app.
