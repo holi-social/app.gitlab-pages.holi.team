@@ -1,0 +1,95 @@
+# Apollo Client Caching
+
+We use the [Apollo react client @apollo/client](https://www.apollographql.com/docs/react) to query and modify data from our [unified GraphQL API](./graphql) in the frontend and use mostly existing features and default behaviour for caching the data. E.g. we do not override the default option `cache-first` as [fetch policy](https://www.apollographql.com/docs/react/data/queries#setting-a-fetch-policy) for queries in most cases.
+Check the [Apollo documentation](https://www.apollographql.com/docs/react/caching/overview/) for an overview of client side caching in Apollo.
+
+However, it was necessary to apply custom logic for the way we handle pagination and cache keys in our app.
+
+The Apollo cache also plays an important role during [SSR](./../server-side-rendering).
+
+## Handling pagination
+
+In order to paginate data, we usually perform multiple queries with varying parameters controlling the `offset` and `limit`. To simplify display of paginated data we combine the different query results into one single list of data. Apollo does provide a built-in helper function [`offsetLimitPagination`](https://www.apollographql.com/docs/react/pagination/offset-based#the-offsetlimitpagination-helper) for this. However, it is not sufficient for our use cases and led to unexpected behaviour. This is why we implemented custom cache policies for these types of queries.
+
+### Cache policy for Okuna `Paged<T>` data
+
+Paginated data from Okuna usually consists of a list of `data`, the number of `totalResults` and can be recognized by a `Paged` suffix in the type name, e.g. 
+```graphql
+type GenericPostPaged {
+  data: [GenericPost]!
+  totalResults: Int!
+}
+```
+
+Data like this can be fetched by passing parameters for `offset` and `limit`, e.g.
+```graphql
+allPosts(
+  offset: Int! = 0
+  limit: Int! = 10
+): GenericPostPaged!
+```
+
+In order to combine the `data` lists of multiple queries, we created a custom fetch policy `pagedPolicy` which respects varying offsets and limits as well as the already existing data. Queries are only executed when data is missing. This way we can use different limits in different parts of the app, e.g. to display a shorter list as kind of a "preview" while using a larger page size in the full list view.
+
+This requires all queries to access the data using the same cache key, i.e. the `limit` and `offset` parameters have to be omitted when creating the [key arguments](https://www.apollographql.com/docs/react/caching/cache-field-behavior#specifying-key-arguments).
+
+### Cache policy for Goodnews articles
+
+Querying Goodnews articles does not follow a strict pagination pattern as it delivers articles of varying count by date. I.e. instead of passing parameters like `offset` and `limit` we pass an argument for `lastDate`:
+
+```graphql
+appGoodNews_articles(
+  lastDate: String
+): AppGoodNews_GoodNewsArticlesQueryResponse
+
+type AppGoodNews_GoodNewsArticlesQueryResponse {
+  articles: [AppGoodNews_GoodNewsArticle]!
+  previousDateTeaser: AppGoodNews_GoodNewsArticle
+}
+```
+
+In order to combine the resulting `articles` in a single list, we use a custom cache policy that simply concatenates the lists (removing duplicates) and omit the `lastDate` when building the cache key.
+
+### Cache policy for Typesense data
+
+Typesense allows executing multiple different queries at the same time. This is reflected in the `multiSearch` query that allows a list of different query inputs and responds with a corresponding list of results. Each query input can control its own pagination parameters.
+
+As our GraphQL endpoints for Typesense are basically wrappers for the actual [Typesense search API](https://typesense.org/docs/27.1/api/search.html) pagination works slightly different here: E.g. we specify `page_size` and `page` instead of `limit` and `offset` and the list of results to combine is called `hits`.
+
+```graphql
+typesense_multiSearch(
+  input: Typesense_MultiSearchRequest_Input
+): Typesense_MultiSearchResponse
+
+input Typesense_SearchParams_Input {
+  page: Int
+  per_page: Int
+  [...]
+}
+
+type Typesense_MultiSearchResponse {
+  results: [Typesense_SearchResponse]!
+}
+
+type Typesense_SearchResponseSuccess {
+  found: Int!
+  hits: [Typesense_SearchResponseHit]
+  [...]
+}
+```
+
+Although we don't fully take advantage of multi queries yet in the frontend, our custom cache policy can already handle pagination per query input. It uses the same combination logic as for the [Paged Okuna queries](#cache-policy-for-okuna-pagedt-data) to combine the results for each query. Again, `page` and `page_size` parameters are omitted when building the cache keys.
+
+## Handling simple lists
+
+When handling non-paginated lists, e.g. simple list fields in more complex types like user interests, we usually don't use pagination. Often the lists are expected to be very short and can be requested at once or using a reasonable limit.
+
+Apollo used to log warnings when updating list fields in existing data and in order to silence warnings like this, we created the `alwaysReplacePolicy` that explicitly overrides existing with new data to be used for all simple list fields.
+
+## Devtools
+
+The [Apollo Client Devtools](https://www.apollographql.com/docs/react/development-testing/developer-tooling#apollo-client-devtools) can be very useful to debug and understand cache behaviour. It is only supported when working locally, however.
+
+## Shortening large cache keys
+
+In order to filter spaces by location, we pass a [GeoJSON](https://geojson.org/) object as query parameter. As GeoJSON objects can get quite large, using it in an unaltered way would result in large and complex cache keys. At the same time the ID of the geolocation is completely sufficient to differentiate queries, so we override the [key arguments](https://www.apollographql.com/docs/react/caching/cache-field-behavior#specifying-key-arguments) for these queries to only use the ID instead of the complete geolocation information.
