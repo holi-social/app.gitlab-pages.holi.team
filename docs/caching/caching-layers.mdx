@@ -1,10 +1,10 @@
 import Drawio from "@theme/Drawio";
-import ArchitectureOverviewDrawio from "!!raw-loader!./img/architecture-overview.drawio";
+import ArchitectureOverviewDrawio from "!!raw-loader!./../img/architecture-overview.drawio";
 
 # Caching Layers
 
 :::info
-This diagram is identical to the one in the [Architecture Overview](./architecture/) page and is repeated here for convenience.
+This diagram is identical to the one in the [Architecture Overview](../architecture/) page and is repeated here for convenience.
 :::
 
 <Drawio content={ArchitectureOverviewDrawio} style={{ width: "100%" }} />
@@ -16,7 +16,7 @@ This diagram is identical to the one in the [Architecture Overview](./architectu
   pointers and does not give any guarantees for completeness or being up-to-date.
 
 - All remote data
-  - fetched via GraphQL (unified-api) is fetched using [Apollo Client caching](https://www.apollographql.com/docs/react/caching/overview/)
+  - fetched via GraphQL (unified-api) is fetched using [Apollo Client caching](./apollo-client-caching.mdx)
   - fetched for chat will be stored in [Jotai](https://jotai.org).
   - login state / user session data is stored in
     [Apollo Reactive Variables](https://www.apollographql.com/docs/react/local-state/reactive-variables/)

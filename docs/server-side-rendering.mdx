@@ -45,7 +45,7 @@ During server-side rendering the following props are added to the server respons
 - Apollo cache
   
   When the page is fully rendered on the server side i.e. all relevant queries were executed, the query cache on the server side contains all data that would also be needed to render the same page on client side. The server cache is serialized and added to the page props, and deserialized on the client-side to initialize the client-side Apollo cache.
-  This is basically "prewarming" the cache, because whenever a query is executed now, the client can access the results that were prefetched on the server side (as long as the [`fetchPolicy`](https://www.apollographql.com/docs/react/data/queries/#setting-a-fetch-policy) is reading from the cache).
+  This is basically "prewarming" the cache, because whenever a query is executed now, the client can access the results that were prefetched on the server side (as long as the [`fetchPolicy`](https://www.apollographql.com/docs/react/data/queries/#setting-a-fetch-policy) is reading from the cache). See [Apollo Client Caching](./caching/apollo-client-caching) for more information about the cache behaviour.
 
   When it is detected that the requested content could not be found or the user does not have the necessary permission to view the content, the server answers with a "Not found" response displaying the 404 page and returning the appropriate status code.
 
