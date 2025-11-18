@@ -3,7 +3,7 @@
 This document provides an overview about how we handle translations. 
 See [holi-frontends/README](https://gitlab.holi.team/app/holi-frontends/#i18n-internationalization) for example usage.
 
-Note that localizaton is managed in [Localazy](https://localazy.com/) which serves as source of truth for copies and translations.
+Note that localizaton is managed in [Localazy](https://localazy.com/) which serves as source of truth for copies and translations. The process of [translation updates](#translation-updates) is described below.
 
 ## Language support and detection
 
@@ -37,3 +37,64 @@ Note that localizaton is managed in [Localazy](https://localazy.com/) which serv
   - Locale specific path names are supported (e.g. https://app.holi.social/de/spenden will be internally redirected to https://app.holi.social/de/donations without changing the URL), but only used for SEO (i.e. such path names will be exposed to search engines, but not be used for navigation inside the app)
 - We use [Intl](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl) to provide locale data, e.g. for number or date formatting
   - On mobile this is polyfilled using [intl](https://www.npmjs.com/package/intl)
+
+## Translation updates
+
+[Localazy](https://localazy.com/) is the source of truth for translations, while a snapshot of those is kept inside the `holi-frontends` repository. During releases only the current snapshot is used and there are no dynamic updates afterwards. Therefore it is currently always necessary to perform a release in order to update translations for users.
+
+The translation snapshot can be updated manually using a [download script](#download-script). There also is a [nightly job](#nightly-job) to perform this update automatically.
+
+If translations should change, the usual workflow should be to update the translation in Localazy. However, there are some cases where developers might decide to change keys, create new keys or remove unused keys during implementation. For these cases we also created an [upload script](#upload-script).
+
+English is the default language in Localazy. When a new key with translations is added, translations for other languages are not released automatically. Instead the english copies are used as a fallback until the translation is reviewed and approved in the Localazy UI.
+
+### Localazy configuration
+
+Translations in Localazy are managed in a "file" called `holi-core`, while it is split into one [JSON file](https://localazy.com/docs/cli/json-format) per language in the `holi-frontends` repository.
+
+Localazy holds more keys than are visible in the frontend snapshot, as keys deleted in the frontend JSON files are only marked as deprecated in Localazy. There are also keys that are only used in Figma, e.g. to contain example content. Those are usually prefixed with `ugc.` (for "user generated content") and are filtered when synchronizing the snapshot.
+
+Pluralization is handled by adding suffixes like `_one` and `_other` to a key and passing the count when resolving the translation in the frontend. For snapshot synchronization this is configured by the option `plural_postfix_us` (`us` stands for underscore).
+
+:::tip Example
+Pluralized keys:
+```JSON
+{
+  "goodDeeds.name_one": "Good deed",
+  "goodDeeds.name_other": "Good deeds",
+  [...]
+}
+```
+Frontend usage:
+```ts
+// Usage without suffix, but parameter `count`
+t('goodDeeds.name', {count: 2}) // Will resolve to "Good deeds" as count is 2
+```
+:::
+
+### Download script
+
+Localazy provides a [CLI](https://localazy.com/docs/cli/the-basics) that is used to download the current translations.
+The script `yarn i18n:download` performs such a download updating the files in `core/i18n/locales`.
+
+### Upload script
+
+Updating translations from a frontend snapshot should only be used sparingly and all changes should be carefully checked, as this could override updates in Localazy. Keys that are not included in the snapshot are marked as deprecated in Localazy after the upload.
+
+To reduce the risk of data loss, the upload script `yarn i18n:upload` creates a patch file for the local changes (in relation to the current state of the `main` branch), downloads the current remote state from Localazy and checks for conflicts. Sometimes it might be necessary to update the snapshot on the `main` branch if it is outdated. It also won't work reliably if the current main branch already includes all updates. If the checks fail but you are very sure the snapshot changes are correct and complete, you can enforce an update with `yarn i18n:upload --force`.
+
+:::warning
+Localazy is the source of truth for translations. Overriding the translations from a frontend snapshot could deprecate keys or translations that were newly added or approved. 
+:::
+
+:::info
+Translations for other languages than English first have to be approved in Localazy before they are available in the next download. Until then the english copies are used as fallback.
+:::
+
+### Nightly job
+
+We have set up a [scheduled pipeline](https://gitlab.holi.team/app/holi-frontends/-/pipeline_schedules) in GitLab to update translations automatically every night.
+
+The pipeline performs a [download](#download-script), checks if there were updates and creates a commit `chore(i18n): updating translations` with `CI Bot` as author if applicable. In order to push to the repository a special [access token](https://gitlab.holi.team/app/holi-frontends/-/settings/access_tokens) is used.
+
+This job is only executed for the `main` branch, i.e. translations in all other branches incl. releases are _not_ automatically updated.
