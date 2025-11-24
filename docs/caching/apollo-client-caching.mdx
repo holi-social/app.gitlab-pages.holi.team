@@ -80,6 +80,10 @@ type Typesense_SearchResponseSuccess {
 
 Although we don't fully take advantage of multi queries yet in the frontend, our custom cache policy `typesenseMultiSearchPagedPolicy` can already handle pagination per query input. It uses the same combination logic as for the [Paged Okuna queries](#cache-policy-for-okuna-pagedt-data) to combine the results for each query. Again, `page` and `page_size` parameters are omitted when building the cache keys.
 
+:::info
+See our [documentation on Typesense](../data-pipelines/typesense.mdx) to learn more about our queries in the frontend.
+:::
+
 ## Handling simple lists
 
 When handling non-paginated lists, e.g. simple list fields in more complex types like user interests, we usually don't use pagination. Often the lists are expected to be very short and can be requested at once or using a reasonable limit.

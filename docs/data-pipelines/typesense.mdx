@@ -1,0 +1,126 @@
+# Typesense
+
+frontend usage
+
+useSingleTypesenseDocumentQuery
+expects and and document type
+unified api builds typesense id from this
+
+useTypesensePaginationMultiQuery: list of multiple search requests
+useTypesensePaginationQuery: single search request (basically multi with a single element array)
+references caching of pagination
+
+read [docs on data pipelines](./index.mdx) to learn how data lands in typesense
+
+mention:
+changes in typesense document type have to be reflected in unified api json schema
+
+https://oss.holi.social/docs/graphql/types/objects/typesense-document
+
+multi query used for
+[volunteering = voltastics, aktion mensch, space tasks]
+volunteering:
+  recos
+    user specific: skills, topics, geolocation - hard coded topics as fallback if neither skills nor topics given
+    100 nearest matching the user embedding, additionally sort by location if given
+  microactions
+    currently hard-coded, otherwise it was filtering by duration and randomly sorted
+    also user location if given
+  filtering
+    filters supported by the ui: topics, skills, remote, location, duration, commitment
+    also special location handling
+  similar recos
+    similarity embedding, sorted by vector distance
+donations
+  currently ui only supports selecting a filter location, but actually similar filters as for volunteering are possible
+search (volunteering, space, profile) + facet counts
+  filter by type, filter and sort by location, text query
+single query used for
+donation details
+volunteering details
+(space, profile and task detail pages use okuna)
+
+all queries just build different typesense queries, in general we can support all possible queries for all possible document types
+=> link typesense query docs
+also similarity embedding for all 
+
+
+in order to query/filter by a field, the schema has to be configured to support this, i.e. the field has to be indexed, maybe also facetted if applicable
+
+
+typesense in general/config
+
+one cluster
+two collections: prod and staging (and some other ones that were used for testing, can be ignored, possibly cleaned up)
+currently: all documents per environment are in _one_ collection
+does not necessarily have to stay this way
+
+link to typesense admin page
+https://cloud.typesense.org/clusters/t9vemwkibxajcorqp/cluster-configuration
+
+manual filtering, useful for debugging queries/current state
+Collections > select collection > Search 
+Scroll down > Search parameters, e.g. facet by type
+Scroll up again > Filter by type
+
+> Collection Settings: Manual updates of current schema
+
+
+similarity embedding
+
+text embedding added by typesense by the schema config
+is calculated automatically when upserting a document
+based on a specified list of fields, could be extended
+
+## Unified API
+
+two endpoints:
+- document by id
+  expects document id and type and builds hard coded query to fetch the correct document
+- multisearch
+  wrapper for typesense multi_search, prefilling collection, typesense api key and url
+json schema for request and response types in json files,
+have to be kept in sync when
+- typesense is updated and the api changes
+- we add new kinds of document types (as it's an enum)
+- schema of "our" document type changes
+
+
+text fields in both english and german
+frontend checks user locale and transforms all data to localized variant
+title_de, title_en > title
+
+
+single collection for everything
+
+## Document schema
+
+Currently we use the same common schema for all document types.
+
+TODO: some are filtered in the unified graphql API
+
+- `id`: In order to prevent ID collisions, all holi IDs are prefixed with the type, e.g. `donation_123` or `space_234`
+- `type`: Can be `donation`, `volunteering`, `petition`, `space`, `task`, `profile`
+- Text fields
+  - Text fields should be provided in all languages the frontend offers (currently DE and EN)
+  - The different variants are written to separate fields, differentiated by respective suffixes, e.g. `title_de`, `title_en`, `description_de`, `description_en` etc.
+- `location_lat_lng`: Optional coordinates for a location, stored as array containing latitude and longitude.
+- `link_locators`
+  - Object containing the necessary information to build URLs in the frontend.
+  - E.g. `{ donation: '123' }` for donations: Will result in `/donations/123`
+  - Can be more complex for nested types, e.g. `{ task: '234', space: 'some-space' }` for tasks: Will result in `/spaces/some-space/tasks/234`
+- Type specific fields
+  - Some fields are only defined for specific types, e.g. `user_full_name` for user profiles, or `donation_open_amount_in_cents` for donations.
+  - By convention these fields should be prefixed by the type name.
+- Labels
+  - `topics_v2`, `skills_v2`: Allows filtering by topics and skills
+  - `location_type`: Remote or on-site
+  - `commitment_label`, `commitment_duration`: Volunteering and task specific labels. There are also fields with information about the "AI reasoning".
+- Embeddings
+  - `embedding`: Typesense generated text embedding - available for all documents
+  - `topics_skills_embedding_v2`: Embedding for filtering and sorting by user interests and skills - available for tasks, volunteering and donations
+  - `similarity_embedding`: Embedding for querying similar documents - available for tasks, volunteering and donations
+
+:::info
+Currently the frontend does not yet make use of all enrichments for donations, but the data would already be available.
+:::
