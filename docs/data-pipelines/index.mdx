@@ -87,7 +87,7 @@ These events are written to a PubSub topic and are processed by a [cloud functio
 
 ## Ingestion pipelines
 
-There are multiple ingestion pipelines to fully update the data in Typesense per data type. These pipelines are only relevant for initial ingestion of an empty Typesense instance and for schema changes or introducation of new data types and are only [triggered on demand](#prefect).
+There are multiple ingestion pipelines to fully update the data in Typesense per data type. These pipelines are only relevant for initial ingestion of an empty Typesense instance and for schema changes or introduction of new data types and are only [triggered on demand](#prefect).
 
 - `all_to_typesense_ingest_from_scratch`: Complete ingestion of _all_ data types that also handles schema changes. Typically this should only be necessary for [larger schema changes](#full-ingestion-of-data).
 - `donation_events`: Pipeline following the ["new" event-based approach](#old-vs-new-approach):
