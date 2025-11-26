@@ -116,16 +116,13 @@ HOLIs chosen integration technology is a Pub/Sub network. Currently, this is
 [Google Cloud Pub/Sub](https://cloud.google.com/pubsub/). Events are defined in
 [Integration Events](../integration-events). All services may publish and/or consume events.
 
-## Data Pipelines / Recommendation Service
+## Data Pipelines / Search enginse
 
 holi uses Machine Learning technologies to calculate recommendations and other types of personalization
 for its users. For this several data pipelines optionally have access to data within various Postgres
-databases, receive domain events from the internal Pub/Sub and can run arbitrary computations using Google
-Cloud services like Google Cloud Run jobs. The resulting recommendations are then stored in a Postgres DB
-to be served to end users by the Recommendation Service.
+databases, crawl external data, receive domain events from the internal Pub/Sub and can run arbitrary computations using Google Cloud services like Google Cloud Run jobs. Intermediate data is stored in BigQuery and a Redis cache, while the final results are stored in Typesense as search engine to be served to end users via our GraphQL API.
 
-Go to [Machine Learning](./machine-learning) to learn more about holis data pipelines and recommendation
-service.
+Go to [Data pipelines](../data-pipelines/) and [Typesense](../data-pipelines/typesense.mdx) to learn more about holis data pipelines, recommendations and our search engine.
 
 ## Postgres / PostGIS
 
@@ -142,7 +139,8 @@ The mobile clients [receive push messages](../push-notifications) via platform-s
 All clients connect to novu cloud [securely](../authentication-authorization/third-party-integrations#securing-the-notification-content) to fetch and acknowledge In-App notifications and allow users to manage their notification preferences.
 
 ## Translation / LibreTranslate
-holi integrates [LibreTranslate](https://github.com/LibreTranslate/LibreTranslate), an open-source machine translation API, to handle translation tasks within the app. 
+
+holi integrates [LibreTranslate](https://github.com/LibreTranslate/LibreTranslate), an open-source machine translation API, to handle translation tasks within the app.
 
 - [holi-translation-api](https://gitlab.holi.team/app/holi-translation-api): Manages requests and interactions with the translation service, enabling users to request translations of posts, comments, and other text content.
 - [holi-libretranslate](https://gitlab.holi.team/app/holi-libretranslate): Deploys and maintains the self-hosted [LibreTranslate](https://github.com/LibreTranslate/LibreTranslate) service.
