@@ -54,7 +54,7 @@ In order to combine the resulting `articles` in a single list, we use a custom c
 
 Typesense allows executing multiple different queries at the same time. This is reflected in the `multiSearch` query that allows a list of different query inputs and responds with a corresponding list of results. Each query input can control its own pagination parameters.
 
-As our GraphQL endpoints for Typesense are basically wrappers for the actual [Typesense search API](https://typesense.org/docs/27.1/api/search.html) pagination works slightly different here: E.g. we specify `page_size` and `page` instead of `limit` and `offset` and the list of results to combine is called `hits`.
+As our GraphQL endpoints for Typesense are basically wrappers for the actual [Typesense search API](https://typesense.org/docs/29.0/api/search.html) pagination works slightly different here: E.g. we specify `page_size` and `page` instead of `limit` and `offset` and the list of results to combine is called `hits`.
 
 ```graphql
 typesense_multiSearch(

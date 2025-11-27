@@ -63,7 +63,7 @@ It might also have to be updated in case of Typesense API changes.
 
 ### Fetching single documents
 
-In order to fetch a single document by its ID we provide the GraphQL query [`documentById`](../graphql/operations/queries/typesense-document-by-id) as a wrapper to the [Typesense document search endpoint](https://typesense.org/docs/27.1/api/search.html):
+In order to fetch a single document by its ID we provide the GraphQL query [`documentById`](../graphql/operations/queries/typesense-document-by-id) as a wrapper to the [Typesense document search endpoint](https://typesense.org/docs/29.0/api/search.html):
 
 - The query expects two parameters: The document ID and [type](../graphql/types/enums/typesense-document-type)
 - The wrapper builds a fixed query:
@@ -79,14 +79,14 @@ In the frontend we provide the helper hook `useSingleTypesenseDocumentQuery` tha
 
 ### Fetching paginated documents
 
-Typesense provides an [endpoint to search by multiple queries](https://typesense.org/docs/27.1/api/federated-multi-search.html) at once (in addition to the ["simple" search endpoint](https://typesense.org/docs/27.1/api/search.html) that only executes one query).
+Typesense provides an [endpoint to search by multiple queries](https://typesense.org/docs/29.0/api/federated-multi-search.html) at once (in addition to the ["simple" search endpoint](https://typesense.org/docs/29.0/api/search.html) that only executes one query).
 
 We do not make full use of this yet in the frontend, except for fetching facet counts to display the number of expected results when filtering. I.e. in most cases we currently only provide a list containing only a single query, but we are already prepared for more complex use cases.
 
 In contrast to the [single document query](#fetching-single-documents) the GraphQL wrapper query [`multiSearch`](../graphql/operations/queries/typesense-multi-search) for multiple documents is rather simple:
 
 - The endpoint expects a list of [search queries as input](../graphql/types/inputs/typesense-search-params-input) that are forwarded without changes
-  - See the [Typesense documentation](https://typesense.org/docs/27.1/api/search.html#search-parameters) for the full list and description of all possible query parameters.
+  - See the [Typesense documentation](https://typesense.org/docs/29.0/api/search.html#search-parameters) for the full list and description of all possible query parameters.
 - The endpoint ensures usage of the correct Typesense endpoint, API key and collection
 
 As we mostly use single search queries, we offer two helper hooks in the frontend:
