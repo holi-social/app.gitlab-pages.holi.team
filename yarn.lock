@@ -4221,9 +4221,9 @@ __metadata:
   linkType: hard
 
 "@tsconfig/docusaurus@npm:^2.0.0":
-  version: 2.0.7
-  resolution: "@tsconfig/docusaurus@npm:2.0.7"
-  checksum: 10c0/021278dc513a3c20f3d7f2fef145508a43a6ac34348475a54aba907dbd0517ab337416710754a2c4314720b367df81e13d45d5f999b00c858323857595ad7905
+  version: 2.0.8
+  resolution: "@tsconfig/docusaurus@npm:2.0.8"
+  checksum: 10c0/34307beac4352278809a14b54b7ef987972ee012f23cf51160cd64c65602fe5fa28f8d8e7ca3d7549a35f1c693186e93c5557c9276eac4683e38046c28eb5cb3
   languageName: node
   linkType: hard
 
