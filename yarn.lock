@@ -3007,17 +3007,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@graphql-markdown/types@npm:^1.13.0":
+"@graphql-markdown/types@npm:^1.13.0, @graphql-markdown/types@npm:^1.4.2":
   version: 1.13.0
   resolution: "@graphql-markdown/types@npm:1.13.0"
   checksum: 10c0/236474311dfb6ec3387d9bc34ab86534079a94bec33073d0be9fe5417d0fadd20cb7e345ac18b61b9c557550460e3ec920c0beeaf2b529e942ef0e253609ea02
-  languageName: node
-  linkType: hard
-
-"@graphql-markdown/types@npm:^1.4.2":
-  version: 1.12.0
-  resolution: "@graphql-markdown/types@npm:1.12.0"
-  checksum: 10c0/30ff51085db6984bb8e6473d74d8461cb5c61827590696ca3352dff015de6a44a98273f8603dbd01868b75a1b4d8034bb81b535773a402d445b3adbc6df0c84d
   languageName: node
   linkType: hard
 
